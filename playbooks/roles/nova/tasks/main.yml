@@ -1,0 +1,45 @@
+---
+
+- name: create database
+  mysql_db: name=nova state=present
+  
+- name: create nova user
+  mysql_user: name=nova host={{ item }} password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
+  with_items:
+    - localhost
+    - "%"
+
+- name: create nova service entry and endpoint
+  script: create_nova_service_entity_and_api_endpoint.sh {{ NOVA_PASS }}
+  environment: admin_openrc
+  sudo: no
+
+- name: install nova packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-novncproxy
+    - nova-scheduler
+    - python-novaclient
+
+- name: edit nova conf file
+  template: src=nova.conf.j2 dest=/etc/nova/nova.conf
+
+- name: Populate the Compute service database
+  script: nova_db_sync.sh
+
+- name: Restart the Compute service services
+  service: name={{ item }} state=restarted
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-consoleauth
+    - nova-scheduler
+    - nova-conductor
+    - nova-novncproxy
+
+- name: remove the SQLite database file
+  file: path=/var/lib/nova/nova.sqlite state=absent

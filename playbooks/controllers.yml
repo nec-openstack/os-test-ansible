@@ -1,0 +1,10 @@
+- hosts: controller
+  roles:
+    - common
+    - mariadb
+    - rabbitmq
+    - keystone
+    - glance
+    - nova
+    - neutron
+    - horizon

@@ -1,0 +1,50 @@
+---
+
+- name: create database
+  mysql_db: name=neutron state=present
+  
+- name: create neutron user
+  mysql_user: name=neutron host={{ item }} password={{ NEUTRON_DBPASS }} priv=neutron.*:ALL state=present
+  with_items:
+    - localhost
+    - "%"
+
+- name: create neutron service entry and endpoint
+  script: create_neutron_service_entity_and_api_endpoint.sh {{ NEUTRON_PASS }}
+  environment: admin_openrc
+  sudo: no
+
+- name: install neutron packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - neutron-server
+    - neutron-plugin-ml2
+    - python-neutronclient
+
+- name: edit neutron conf file
+  template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
+
+- name: edit ml2 conf file
+  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+
+- name: Populate the Compute service database
+  script: neutron_db_sync.sh
+
+- name: Restart the Compute service and the Networking service
+  service: name={{ item }} state=restarted
+  with_items:
+    - nova-api
+    - neutron-server
+
+- name: create the external network
+  script: create_external_network.sh {{ EXTERNAL_NETWORK_CIDR }} {{ FLOATING_IP_START }} {{ FLOATING_IP_END }} {{ EXTERNAL_NETWORK_GATEWAY }}
+  environment: admin_openrc
+  sudo: no
+
+- name: create the tenant network
+  script: create_tenant_network.sh {{ TENANT_NETWORK_CIDR }} {{ TENANT_NETWORK_GATEWAY }}
+  environment: demo_openrc
+  sudo: no
+
+
+ 

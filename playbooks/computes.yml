@@ -1,0 +1,5 @@
+- hosts: computes
+  roles:
+    - common
+    - ntp_client
+    - compute

@@ -1,0 +1,42 @@
+---
+
+- name: create database
+  mysql_db: name=glance state=present
+
+- name: create glance user
+  mysql_user: name=glance host={{ item }} password={{ GLANCE_DBPASS }} priv=glance.*:ALL state=present
+  with_items:
+    - localhost
+    - "%"
+
+- name: create glance service entry and endpoint
+  script: create_glance_service_entity_and_api_endpoint.sh {{ GLANCE_PASS }}
+  environment: admin_openrc
+  sudo: no
+
+- name: install glance packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - glance
+    - python-glanceclient
+
+- name: edit glance-api conf file
+  template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf
+
+- name: edit glance-registry conf file
+  template: src=glance-registry.conf.j2 dest=/etc/glance/glance-registry.conf
+
+- name: Populate the Image service database
+  script: glance_db_sync.sh
+
+- name: Restart the Image service services
+  service: name={{ item }} state=restarted
+  with_items:
+    - glance-registry
+    - glance-api
+
+- name: remove the SQLite database file
+  file: path=/var/lib/glance/glance.sqlite state=absent
+
+
+

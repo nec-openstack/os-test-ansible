@@ -1,0 +1,5 @@
+- hosts: network
+  roles:
+    - common
+    - ntp_client
+    - network

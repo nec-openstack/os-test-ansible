@@ -1,0 +1,63 @@
+---
+
+- name: create database
+  mysql_db: name=keystone state=present
+
+- name: create keystone user
+  mysql_user: name=keystone host={{ item }} password={{ KEYSTONE_DBPASS }} priv=keystone.*:ALL state=present
+  with_items:
+    - localhost
+    - "%"
+
+- name: Disable the keystone service from starting automatically after installation
+  script: disable_auto_start_keystone_service.sh
+
+- name: install keystone packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - keystone
+    - python-openstackclient
+    - apache2
+    - libapache2-mod-wsgi
+    - memcached 
+    - python-memcache
+
+- name: edit keystone conf file
+  template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf
+
+- name: Populate the Identity service database
+  script: keystone_db_sync.sh
+
+- name: edit apache conf file
+  copy: src=apache2.conf dest=/etc/apache2/apache2.conf
+
+- name: create wsgi conf file
+  copy: src=wsgi-keystone.conf dest=/etc/apache2/sites-available/wsgi-keystone.conf
+
+- name: Enable the Identity service virtual hosts
+  file: src=/etc/apache2/sites-available/wsgi-keystone.conf dest=/etc/apache2/sites-enabled/wsgi-keystone.conf state=link
+
+- name: Create the directory structure for the WSGI components
+  file: path=/var/www/cgi-bin/keystone state=directory
+
+- name: Copy the WSGI components from the upstream repository into this directory
+  script: copy_wsgi_components.sh
+
+- name: Adjust ownership and permissions on this directory and the files in it
+  file: path=/var/www/cgi-bin/keystone owner=keystone group=keystone mode=0755
+
+- name: Restart the Apache HTTP server
+  service: name=apache2 state=restarted
+
+- name: remove the SQLite database file
+  file: path=/var/lib/keystone/keystone.db state=absent
+
+- name: create the service entity and API endpoint
+  script: create_service_entity_and_api_endpoint.sh
+  environment: temp_auth_token
+
+- name: Create projects, users, and roles
+  script: create_tenants_users_roles.sh {{ ADMIN_PASS }} {{ DEMO_PASS }}
+  environment: temp_auth_token
+
+
