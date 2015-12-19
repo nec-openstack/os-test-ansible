@@ -1,7 +1,7 @@
 ---
 
 - name: Install ntp
-  apt: name=ntp update_cache=yes cache_valid_time=3600
+  apt: name=chrony update_cache=yes cache_valid_time=3600
 
 - name: copy hosts file
   template: src=hosts.j2 dest=/etc/hosts

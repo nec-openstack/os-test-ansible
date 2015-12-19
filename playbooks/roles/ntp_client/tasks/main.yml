@@ -1,5 +1,5 @@
 ---
 
-- name: copy ntp.conf file
-  copy: src=ntp.conf dest=/etc/ntp.conf
+- name: copy chrony.conf file
+  copy: src=chrony.conf dest=/etc/chrony/chrony.conf
   notify: restart ntp
