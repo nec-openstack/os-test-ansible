@@ -15,3 +15,7 @@
 - name: upgrade packages
   apt: update_cache=yes upgrade=dist
 
+- name: Install the OpenStack client
+  apt: name=python-openstackclient update_cache=yes cache_valid_time=3600
+
+
