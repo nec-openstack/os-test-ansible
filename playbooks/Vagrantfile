@@ -12,21 +12,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define "network" do |net|
-    net.vm.box = "ubuntu/trusty64"
-    net.vm.hostname = "network"
-    net.vm.network "private_network", ip: "10.1.0.21"
-    net.vm.network "private_network", ip: "10.1.1.21", virtualbox__intnet: "tunnel"
-    net.vm.provider :virtualbox do |vm|
-      vm.memory = 2048
-    end
-  end
-
   config.vm.define "compute1" do |com1|
     com1.vm.box = "ubuntu/trusty64"
     com1.vm.hostname = "compute1"
     com1.vm.network "private_network", ip: "10.1.0.31"
-    com1.vm.network "private_network", ip: "10.1.1.31", virtualbox__intnet: "tunnel"
   end
 
 #  config.vm.provision "ansible" do |ansible|
