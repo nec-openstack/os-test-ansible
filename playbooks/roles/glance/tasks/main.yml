@@ -37,6 +37,3 @@
 
 - name: remove the SQLite database file
   file: path=/var/lib/glance/glance.sqlite state=absent
-
-
-

@@ -1,11 +1,6 @@
-openstack user create --password $1 glance
+openstack user create --domain default --password $1 glance
 openstack role add --project service --user glance admin
 openstack service create --name glance --description "OpenStack Image service" image
-openstack endpoint create \
---publicurl http://controller:9292 \
---internalurl http://controller:9292 \
---adminurl http://controller:9292 \
---region RegionOne \
-image
-
-
+openstack endpoint create --region RegionOne image public http://controller:9292
+openstack endpoint create --region RegionOne image internal http://controller:9292
+openstack endpoint create --region RegionOne image admin http://controller:9292
