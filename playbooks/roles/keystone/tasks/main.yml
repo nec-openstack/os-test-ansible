@@ -39,15 +39,6 @@
 - name: Enable the Identity service virtual hosts
   file: src=/etc/apache2/sites-available/wsgi-keystone.conf dest=/etc/apache2/sites-enabled/wsgi-keystone.conf state=link
 
-#- name: Create the directory structure for the WSGI components
-#  file: path=/var/www/cgi-bin/keystone state=directory
-
-#- name: Copy the WSGI components from the upstream repository into this directory
-#  script: copy_wsgi_components.sh
-
-#- name: Adjust ownership and permissions on this directory and the files in it
-#  file: path=/var/www/cgi-bin/keystone owner=keystone group=keystone mode=0755
-
 - name: Restart the Apache HTTP server
   service: name=apache2 state=restarted
 
