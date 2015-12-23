@@ -6,11 +6,11 @@
 - name: copy hosts file
   template: src=hosts.j2 dest=/etc/hosts
 
-- name: install ubuntu-cloud-keyring
-  apt: name=ubuntu-cloud-keyring
+- name: install software-properties-common
+  apt: name=software-properties-common
 
 - name: enable openstack repository
-  script: enable_openstack_repository.sh
+  command: apt-add-repository cloud-archive:liberty -y
 
 - name: upgrade packages
   apt: update_cache=yes upgrade=dist
