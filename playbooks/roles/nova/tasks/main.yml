@@ -28,10 +28,10 @@
 - name: edit nova conf file
   template: src=nova.conf.j2 dest=/etc/nova/nova.conf
 
-- name: Populate the Compute service database
+- name: Populate the Compute database
   script: nova_db_sync.sh
 
-- name: Restart the Compute service services
+- name: Restart the Compute services
   service: name={{ item }} state=restarted
   with_items:
     - nova-api
