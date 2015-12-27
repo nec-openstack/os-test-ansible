@@ -19,32 +19,42 @@
   with_items:
     - neutron-server
     - neutron-plugin-ml2
+    - neutron-plugin-linuxbridge-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
     - python-neutronclient
 
-- name: edit neutron conf file
+- name: Configure the server component
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
 
-- name: edit ml2 conf file
+- name: Configure the Modular Layer 2 (ML2) plug-in
   template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
 
-- name: Populate the Compute service database
+- name: Configure the Linux bridge agent
+  template: src=linuxbridge_agent.ini.j2 dest=/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+
+- name: Configure the layer-3 agent
+  template: src=l3_agent.ini.j2 dest=/etc/neutron/l3_agent.ini
+
+- name: Configure the DHCP agent
+  template: src=dhcp_agent.ini.j2 dest=/etc/neutron/dhcp_agent.ini
+
+- name: Configure the metadata agent
+  template: src=metadata_agent.ini.j2 dest=/etc/neutron/metadata_agent.ini
+
+- name: Populate the database
   script: neutron_db_sync.sh
 
-- name: Restart the Compute service and the Networking service
+- name: Restart the Compute API service and the Networking services
   service: name={{ item }} state=restarted
   with_items:
     - nova-api
     - neutron-server
+    - neutron-plugin-linuxbridge-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+    - neutron-l3-agent
 
-- name: create the external network
-  script: create_external_network.sh {{ EXTERNAL_NETWORK_CIDR }} {{ FLOATING_IP_START }} {{ FLOATING_IP_END }} {{ EXTERNAL_NETWORK_GATEWAY }}
-  environment: admin_openrc
-  sudo: no
-
-- name: create the tenant network
-  script: create_tenant_network.sh {{ TENANT_NETWORK_CIDR }} {{ TENANT_NETWORK_GATEWAY }}
-  environment: demo_openrc
-  sudo: no
-
-
- 
+- name: remove the SQLite database file
+  file: path=/var/lib/neutron/neutron.sqlite state=absent
