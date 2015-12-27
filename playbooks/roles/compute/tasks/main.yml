@@ -9,6 +9,9 @@
 - name: edit nova conf file
   template: src=nova.conf.j2 dest=/etc/nova/nova.conf
 
+- name: edit nova-compute. conf file
+  template: src=nova-compute.conf.j2 dest=/etc/nova/nova-compute.conf
+
 - name: Restart the Compute service services
   service: name=nova-compute state=restarted
 
@@ -18,33 +21,17 @@
 #
 # Add a networking component
 #
-- name: edit the sysctl conf file
-  copy: src=sysctl.conf dest=/etc/sysctl.conf
-
-- name: Implement the changes
-  command: sysctl -p
 
 - name: install neutron packages
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
-    - neutron-plugin-ml2
-    - neutron-plugin-openvswitch-agent
+    - neutron-plugin-linuxbridge-agent
 
 - name: edit neutron conf file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
 
-- name: edit ml2 conf file
-  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+- name: Configure the Linux bridge agent
+  template: src=linuxbridge_agent.ini.j2 dest=/etc/neutron/plugins/ml2/linuxbridge_agent.ini
 
-- name: Restart the OVS service
-  service: name=openvswitch-switch state=restarted
-
-- name: edit nova conf file
-  template: src=nova.conf.j2 dest=/etc/nova/nova.conf
-
-- name: Restart the Compute service
-  service: name=nova-compute state=restarted
-
-- name: Restart the Open vSwitch (OVS) agent
-  service: name=neutron-plugin-openvswitch-agent state=restarted
-
+- name: Restart the Linux bridge agent
+  service: name=neutron-plugin-linuxbridge-agent state=restarted
