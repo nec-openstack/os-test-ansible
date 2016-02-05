@@ -1,3 +1,2 @@
 - include: controllers.yml
-- include: networks.yml
 - include: computes.yml
