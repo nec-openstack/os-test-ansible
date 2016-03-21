@@ -1,13 +1,17 @@
 controller ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222
 compute1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2200
+block1 ansible_ssh_host=127.0.0.1 ansible_ssh_port=2201
 
-[controller]
+[ontroller]
 controller
 
 [computes]
 compute1
 
+[blocks]
+block1
+
 [dev:children]
 controller
 computes
-
+blocks

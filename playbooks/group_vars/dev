@@ -8,6 +8,8 @@ NETWORK_TUNNEL_IP: 10.1.1.21
 compute1_mgmt_ip: 10.1.0.31
 COMPUTE1_TUNNEL_IP: 10.1.1.31
 
+block1_mgmt_ip: 10.1.0.41
+
 RABBIT_PASS: password
 KEYSTONE_DBPASS: password
 ADMIN_TOKEN: admin_token
@@ -57,3 +59,8 @@ OVERLAY_INTERFACE_IP_ADDRESS: 10.1.0.11
 VIRT_TYPE: qemu
 
 TIME_ZONE: UTC
+
+CINDER_DBPASS: password
+CINDER_PASS: password
+
+

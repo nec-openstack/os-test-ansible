@@ -1,0 +1,5 @@
+- hosts: blocks
+  roles:
+    - common
+    - ntp_client
+    - block
