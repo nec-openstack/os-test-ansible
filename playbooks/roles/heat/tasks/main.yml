@@ -1,0 +1,42 @@
+- name: create database
+  mysql_db: name=heat state=present
+  
+- name: create heat user
+  mysql_user: name=heat host={{ item }} password={{ HEAT_DBPASS }} priv=heat.*:ALL state=present
+  with_items:
+    - localhost
+    - "%"
+
+- name: create heat service entry and endpoint
+  script: create_heat_service_entity_and_api_endpoint.sh {{ HEAT_PASS }}
+  environment: admin_openrc
+  sudo: no
+
+- name: add stack managemant information to Identity service
+  script: add_stack_management_information.sh {{ HEAT_DOMAIN_PASS }}
+  environment: admin_openrc
+  sudo: no
+
+- name: install heat packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - heat-api
+    - heat-api-cfn
+    - heat-engine
+    - python-heatclient
+
+- name: edit heat conf file
+  template: src=heat.conf.j2 dest=/etc/heat/heat.conf
+
+- name: Populate the Orchestration database
+  script: heat_db_sync.sh
+
+- name: Restart the Orchestration services
+  service: name={{ item }} state=restarted
+  with_items:
+    - heat-api
+    - heat-api-cfn
+    - heat-engine
+
+- name: remove the SQLite database file
+  file: path=/var/lib/heat/heat.sqlite state=absent
