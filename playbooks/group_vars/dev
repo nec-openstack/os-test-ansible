@@ -66,4 +66,3 @@ CINDER_PASS: password
 HEAT_DBPASS: password
 HEAT_PASS: password
 HEAT_DOMAIN_PASS: password
-

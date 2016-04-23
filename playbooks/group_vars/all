@@ -2,3 +2,67 @@
 
 NTP_SERVER: ntp.jst.mfeed.ad.jp
 
+controller_mgmt_ip: 10.0.0.11
+network_mgmt_ip: 10.0.0.11
+NETWORK_TUNNEL_IP: 10.0.0.11
+compute1_mgmt_ip: 10.0.0.31
+COMPUTE1_TUNNEL_IP: 10.0.0.31
+
+block1_mgmt_ip: 10.0.0.41
+
+RABBIT_PASS: password
+KEYSTONE_DBPASS: password
+ADMIN_TOKEN: admin_token
+
+temp_auth_token:
+  OS_TOKEN: admin_token
+  OS_URL: http://controller:35357/v3
+  OS_IDENTITY_API_VERSION: 3
+
+ADMIN_PASS: password
+DEMO_PASS: password
+
+admin_openrc:
+  OS_PROJECT_DOMAIN_ID: default
+  OS_USER_DOMAIN_ID: default
+  OS_PROJECT_NAME: admin
+  OS_TENANT_NAME: admin
+  OS_USERNAME: admin
+  OS_PASSWORD: "{{ ADMIN_PASS }}"
+  OS_AUTH_URL: http://controller:35357/v3
+  OS_IDENTITY_API_VERSION: 3
+
+demo_openrc:
+  OS_PROJECT_DOMAIN_ID: default
+  OS_USER_DOMAIN_ID: default
+  OS_PROJECT_NAME: demo
+  OS_TENANT_NAME: demo
+  OS_USERNAME: demo
+  OS_PASSWORD: "{{ DEMO_PASS }}"
+  OS_AUTH_URL: http://controller:5000/v3
+  OS_IDENTITY_API_VERSION: 3
+
+GLANCE_DBPASS: password
+GLANCE_PASS: password
+
+NOVA_DBPASS: password
+NOVA_PASS: password
+
+NEUTRON_DBPASS: password
+NEUTRON_PASS: password
+
+METADATA_SECRET: secret
+
+PUBLIC_INTERFACE_NAME: p3p1
+OVERLAY_INTERFACE_IP_ADDRESS: 10.0.0.31
+
+VIRT_TYPE: kvm
+
+TIME_ZONE: UTC
+
+CINDER_DBPASS: password
+CINDER_PASS: password
+
+HEAT_DBPASS: password
+HEAT_PASS: password
+HEAT_DOMAIN_PASS: password

@@ -1,0 +1,15 @@
+[controller]
+controller
+
+[computes]
+compute1
+compute2
+
+[blocks]
+block1
+
+[all:children]
+controller
+computes
+blocks
+
