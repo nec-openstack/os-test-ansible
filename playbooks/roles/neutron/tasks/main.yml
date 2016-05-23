@@ -19,7 +19,7 @@
   with_items:
     - neutron-server
     - neutron-plugin-ml2
-    - neutron-plugin-linuxbridge-agent
+    - neutron-plugin-{{ mechanism_driver }}-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
     - neutron-metadata-agent
@@ -31,8 +31,8 @@
 - name: Configure the Modular Layer 2 (ML2) plug-in
   template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
 
-- name: Configure the Linux bridge agent
-  template: src=linuxbridge_agent.ini.j2 dest=/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+- name: Configure L2 agent
+  template: src={{ mechanism_driver }}_agent.ini.j2 dest=/etc/neutron/plugins/ml2/{{ mechanism_driver }}_agent.ini
 
 - name: Configure the layer-3 agent
   template: src=l3_agent.ini.j2 dest=/etc/neutron/l3_agent.ini
@@ -46,12 +46,24 @@
 - name: Populate the database
   script: neutron_db_sync.sh
 
+- name: Restart the OVS service
+  service: name=openvswitch-switch state=restarted
+  when: mechanism_driver == "openvswitch"
+
+- name: Add the external bridge
+  command: ovs-vsctl add-br br-ex
+  when: mechanism_driver == "openvswitch"
+
+- name: Add a port to the external bridge that connects to the physical external network interface
+  command: ovs-vsctl add-port br-ex {{ PUBLIC_INTERFACE_NAME }}
+  when: mechanism_driver == "openvswitch"
+
 - name: Restart the Compute API service and the Networking services
   service: name={{ item }} state=restarted
   with_items:
     - nova-api
     - neutron-server
-    - neutron-plugin-linuxbridge-agent
+    - neutron-plugin-{{ mechanism_driver }}-agent
     - neutron-dhcp-agent
     - neutron-metadata-agent
     - neutron-l3-agent

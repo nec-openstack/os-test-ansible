@@ -25,13 +25,13 @@
 - name: install neutron packages
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
-    - neutron-plugin-linuxbridge-agent
+    - neutron-plugin-{{ mechanism_driver }}-agent
 
 - name: edit neutron conf file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
 
-- name: Configure the Linux bridge agent
-  template: src=linuxbridge_agent.ini.j2 dest=/etc/neutron/plugins/ml2/linuxbridge_agent.ini
+- name: Configure L2 agent
+  template: src={{ mechanism_driver }}_agent.ini.j2 dest=/etc/neutron/plugins/ml2/{{ mechanism_driver }}_agent.ini
 
-- name: Restart the Linux bridge agent
-  service: name=neutron-plugin-linuxbridge-agent state=restarted
+- name: Restart L2 agent
+  service: name=neutron-plugin-{{ mechanism_driver }}-agent state=restarted

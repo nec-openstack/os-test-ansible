@@ -8,6 +8,6 @@
     - glance
     - nova
     - neutron
-    - horizon
-    - cinder
-    - heat
+#    - horizon
+#    - cinder
+#    - heat
