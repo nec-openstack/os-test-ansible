@@ -7,9 +7,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cont.vm.box = "ubuntu/trusty64"
     cont.vm.hostname = "controller"
     cont.vm.network "private_network", ip: "10.1.0.11"
-    cont.vm.network "private_network", ip: "10.2.0.11"
     cont.vm.provider :virtualbox do |vm|
-      vm.memory = 4096
+      vm.memory = 3072
+    end
+  end
+
+  config.vm.define "network" do |net|
+    net.vm.box = "ubuntu/trusty64"
+    net.vm.hostname = "network"
+    net.vm.network "private_network", ip: "10.1.0.21"
+    net.vm.network "private_network", ip: "10.1.1.21", vitual__intnet: "tunnel"
+    net.vm.network "private_network", ip: "10.2.0.21"
+    net.vm.provider :virtualbox do |vm|
+      vm.memory = 1024
     end
   end
 
@@ -17,6 +27,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     com1.vm.box = "ubuntu/trusty64"
     com1.vm.hostname = "compute1"
     com1.vm.network "private_network", ip: "10.1.0.31"
+    com1.vm.network "private_network", ip: "10.1.1.31", virtual__intnet: "tunnel"
+    com1.vm.provider :virtualbox do |vm|
+      vm.memory = 2048
+    end
+ 
   end
 
   config.vm.define "block1" do |blk1|
