@@ -3,7 +3,6 @@
 NTP_SERVER: ntp.jst.mfeed.ad.jp
 
 controller_mgmt_ip: 10.1.0.11
-CONTROLLER_TUNNEL_IP: 10.1.0.11
 network_mgmt_ip: 10.1.0.21
 NETWORK_TUNNEL_IP: 10.1.1.21
 compute1_mgmt_ip: 10.1.0.31
