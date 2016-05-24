@@ -1,0 +1,53 @@
+---
+
+- name: install neutron packages
+  apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - neutron-plugin-ml2
+    - neutron-plugin-{{ mechanism_driver }}-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+    - python-neutronclient
+
+- name: Configure the server component
+  template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
+
+- name: Configure the Modular Layer 2 (ML2) plug-in
+  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+
+- name: Configure L2 agent
+  template: src={{ mechanism_driver }}_agent.ini.j2 dest=/etc/neutron/plugins/ml2/{{ mechanism_driver }}_agent.ini
+
+- name: Configure the layer-3 agent
+  template: src=l3_agent.ini.j2 dest=/etc/neutron/l3_agent.ini
+
+- name: Configure the DHCP agent
+  template: src=dhcp_agent.ini.j2 dest=/etc/neutron/dhcp_agent.ini
+
+- name: Configure MTU for VXLAN/GRE networks
+  copy: src=dnsmasq-neutron.conf dest=/etc/neutron/dnsmasq-neutron.conf
+
+
+- name: Configure the metadata agent
+  template: src=metadata_agent.ini.j2 dest=/etc/neutron/metadata_agent.ini
+
+- name: Restart the OVS service
+  service: name=openvswitch-switch state=restarted
+  when: mechanism_driver == "openvswitch"
+
+- name: Add the external bridge
+  command: ovs-vsctl add-br br-ex
+  when: mechanism_driver == "openvswitch"
+
+- name: Add a port to the external bridge that connects to the physical external network interface
+  command: ovs-vsctl add-port br-ex {{ PUBLIC_INTERFACE_NAME }}
+  when: mechanism_driver == "openvswitch"
+
+- name: Restart the Networking services
+  service: name={{ item }} state=restarted
+  with_items:
+    - neutron-plugin-{{ mechanism_driver }}-agent
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+    - neutron-l3-agent

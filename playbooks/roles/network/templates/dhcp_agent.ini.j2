@@ -11,7 +11,11 @@ verbose = True
 
 # The DHCP agent requires an interface driver be set. Choose the one that best
 # matches your plugin.
+{% if mechanism_driver == 'linuxbridge' %}
 interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+{% else %}
+interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
+{% endif %}
 
 # Example of interface_driver option for OVS based plugins(OVS, Ryu, NEC, NVP,
 # BigSwitch/Floodlight)

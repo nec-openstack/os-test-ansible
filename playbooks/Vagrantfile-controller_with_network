@@ -1,0 +1,56 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+
+  config.vm.define "controller" do |cont|
+    cont.vm.box = "ubuntu/trusty64"
+    cont.vm.hostname = "controller"
+    cont.vm.network "private_network", ip: "10.1.0.11"
+    cont.vm.provider :virtualbox do |vm|
+      vm.memory = 3072
+    end
+  end
+
+  config.vm.define "network" do |net|
+    net.vm.box = "ubuntu/trusty64"
+    net.vm.hostname = "network"
+    net.vm.network "private_network", ip: "10.1.0.21"
+    net.vm.network "private_network", ip: "10.1.1.21", vitual__intnet: "tunnel"
+    net.vm.network "private_network", ip: "10.2.0.21"
+    net.vm.provider :virtualbox do |vm|
+      vm.memory = 1024
+    end
+  end
+
+  config.vm.define "compute1" do |com1|
+    com1.vm.box = "ubuntu/trusty64"
+    com1.vm.hostname = "compute1"
+    com1.vm.network "private_network", ip: "10.1.0.31"
+    com1.vm.network "private_network", ip: "10.1.1.31", virtual__intnet: "tunnel"
+    com1.vm.provider :virtualbox do |vm|
+      vm.memory = 2048
+    end
+ 
+  end
+
+  config.vm.define "block1" do |blk1|
+    blk1.vm.box = "ubuntu/trusty64"
+    blk1.vm.hostname = "block1"
+    blk1.vm.network "private_network", ip: "10.1.0.41"
+    blk1.vm.provider "virtualbox" do |vb|
+      at_disk = 'tmp/name_of_file.vdi'
+      unless File.exists?(at_disk)
+        vb.customize ['createhd', '--filename', at_disk, '--size', 5 * 1024]
+      end
+      vb.customize ['storageattach', :id, '--storagectl', 'SATAController', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', at_disk]
+    end
+  end
+
+#  config.vm.provision "ansible" do |ansible|
+#    ansible.playbook = "site.yml"
+#    ansible.inventory_path = "dev"
+#    ansible.sudo = true
+#end
+
+end
