@@ -983,7 +983,7 @@ lock_path = $state_path/lock
 
 # The RabbitMQ broker address where a single node is used. (string value)
 # Deprecated group/name - [DEFAULT]/rabbit_host
-rabbit_host = controller
+rabbit_host = {{ rabbit_host }}
 
 # The RabbitMQ broker port where a single node is used. (integer value)
 # Deprecated group/name - [DEFAULT]/rabbit_port

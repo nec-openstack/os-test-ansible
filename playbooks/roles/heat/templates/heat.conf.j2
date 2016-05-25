@@ -677,7 +677,7 @@ auth_uri = http://controller:5000/v3
 
 # The RabbitMQ broker address where a single node is used. (string value)
 # Deprecated group/name - [DEFAULT]/rabbit_host
-rabbit_host = controller
+rabbit_host = {{ rabbit_host }}
 
 # The RabbitMQ broker port where a single node is used. (integer value)
 # Deprecated group/name - [DEFAULT]/rabbit_port

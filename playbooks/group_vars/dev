@@ -3,6 +3,7 @@
 NTP_SERVER: ntp.jst.mfeed.ad.jp
 
 db_host: controller
+rabbit_host: controller
 
 controller_mgmt_ip: 10.1.0.11
 network_mgmt_ip: 10.1.0.21

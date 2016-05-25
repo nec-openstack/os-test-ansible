@@ -28,7 +28,7 @@ vncserver_proxyclient_address = $my_ip
 connection = mysql+pymysql://nova:{{ NOVA_DBPASS }}@{{ db_host }}/nova
 
 [oslo_messaging_rabbit]
-rabbit_host = controller
+rabbit_host = {{ rabbit_host }}
 rabbit_userid = openstack
 rabbit_password = {{ RABBIT_PASS }}
 

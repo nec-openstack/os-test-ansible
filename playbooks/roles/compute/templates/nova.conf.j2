@@ -28,7 +28,7 @@ vncserver_proxyclient_address = $my_ip
 novncproxy_base_url = http://controller:6080/vnc_auto.html
 
 [oslo_messaging_rabbit]
-rabbit_host = controller
+rabbit_host = {{ rabbit_host }}
 rabbit_userid = openstack
 rabbit_password = {{ RABBIT_PASS }}
 

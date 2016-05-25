@@ -19,7 +19,7 @@ glance_host = controller
 connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@{{ db_host }}/cinder
 
 [oslo_messaging_rabbit]
-rabbit_host = controller
+rabbit_host = {{ rabbit_host }}
 rabbit_userid = openstack
 rabbit_password = {{ RABBIT_PASS }}
 
