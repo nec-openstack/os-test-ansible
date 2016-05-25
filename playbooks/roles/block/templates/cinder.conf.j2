@@ -16,7 +16,7 @@ enabled_backends = lvm
 glance_host = controller
 
 [database]
-connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@controller/cinder
+connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@{{ db_host }}/cinder
 
 [oslo_messaging_rabbit]
 rabbit_host = controller

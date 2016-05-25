@@ -211,7 +211,7 @@ stack_user_domain_name = heat
 # Deprecated group/name - [DEFAULT]/sql_connection
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
-connection = mysql+pymysql://heat:{{ HEAT_DBPASS }}@controller/heat
+connection = mysql+pymysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
 
 # The SQLAlchemy connection string to use to connect to the slave database.
 # (string value)

@@ -361,7 +361,7 @@ backend = sqlalchemy
 # Deprecated group/name - [DEFAULT]/sql_connection
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
-connection = mysql+pymysql://glance:{{ GLANCE_DBPASS }}@controller/glance
+connection = mysql+pymysql://glance:{{ GLANCE_DBPASS }}@{{ db_host }}/glance
 
 # The SQLAlchemy connection string to use to connect to the slave
 # database. (string value)

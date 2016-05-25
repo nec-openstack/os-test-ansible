@@ -14,7 +14,7 @@ rpc_backend = rabbit
 my_ip = {{ controller_mgmt_ip }}
 
 [database]
-connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@controller/cinder
+connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@{{ db_host }}/cinder
 
 [oslo_messaging_rabbit]
 rabbit_host = controller
