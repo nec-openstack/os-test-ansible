@@ -13,7 +13,7 @@ volumes_dir = /var/lib/cinder/volumes
 rpc_backend = rabbit
 my_ip = {{ block1_mgmt_ip }} 
 enabled_backends = lvm
-glance_host = controller
+glance_host = {{ glance_host }}
 
 [database]
 connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@{{ db_host }}/cinder

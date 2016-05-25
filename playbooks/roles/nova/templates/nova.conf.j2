@@ -43,7 +43,7 @@ username = nova
 password = {{ NOVA_PASS }}
 
 [glance]
-host = controller
+host = {{ glance_host }}
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
