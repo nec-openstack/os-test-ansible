@@ -1,12 +1,38 @@
-Ansible playbooks for deploying OpenStack following http://docs.openstack.org/liberty/install-guide-ubuntu/
+This is ansible playbooks to deploy OpenStack for testing purpose.
+Only Ubuntu 14.04 is tested.
+This installs the following OpenStack projects:
 
-## limitations
+* Keystone
+* Glance
+* Nova
+* Neutron
+* Horizon
+* Cinder
+* Heat
 
-* Implement only Networking Option 2: Self-service networks
+## How to use
 
-* Add the Object Storage service section is __NOT__ implemented.
+### Deploy OpenStack using vagrant
 
-* Add the Telemetry service section is __NOT__ implemented.
+#### Install OpenStack
+
+<pre>
+$ cd playbooks
+$ vagrant up
+$ ansible-playbook -i dev site.yml
+</pre>
+
+#### Create virtual networks
+
+<pre>
+$ scp -P 2222 -i /home/hid-nakamura/.vagrant.d/insecure_private_key ./scripts/* vagrant@localhost:/home/vagrant/
+$ vagrant ssh controller
+$ source admin-openrc.sh
+$ ./create_public_network.sh
+$ source demo-openrc.sh
+$ ./create_private_network.sh
+</pre>
+
 
 ## License
 
