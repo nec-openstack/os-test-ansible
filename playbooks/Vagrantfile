@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cont.vm.network "private_network", ip: "10.1.0.11"
     cont.vm.provider :virtualbox do |vm|
       vm.memory = 3072
-    end
+   end
   end
 
   config.vm.define "network" do |net|
@@ -20,6 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     net.vm.network "private_network", ip: "10.2.0.21"
     net.vm.provider :virtualbox do |vm|
       vm.memory = 1024
+      vm.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
     end
   end
 
@@ -31,7 +32,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     com1.vm.provider :virtualbox do |vm|
       vm.memory = 2048
     end
- 
   end
 
   config.vm.define "block1" do |blk1|

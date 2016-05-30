@@ -8,7 +8,7 @@
     - "%"
 
 - name: create heat service entry and endpoint
-  script: create_heat_service_entity_and_api_endpoint.sh {{ HEAT_PASS }}
+  script: create_heat_service_entity_and_api_endpoint.sh {{ HEAT_PASS }} {{ api_host }}
   environment: admin_openrc
   sudo: no
 

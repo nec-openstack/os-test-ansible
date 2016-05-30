@@ -364,7 +364,7 @@ notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 
 # URL for connection to nova (Only supports one nova region currently).
-nova_url = http://controller:8774/v2
+nova_url = http://{{ api_host }}:8774/v2
 
 # Name of nova region to use. Useful if keystone manages more than one region
 # nova_region_name =
@@ -714,8 +714,8 @@ root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 # ===========  end of items for agent management extension =====
 
 [keystone_authtoken]
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
+auth_uri = http://{{ api_host }}:5000
+auth_url = http://{{ api_host }}:35357
 auth_plugin = password
 project_domain_id = default
 user_domain_id = default
@@ -796,7 +796,7 @@ connection = mysql+pymysql://neutron:{{ NEUTRON_DBPASS }}@{{ db_host }}/neutron
 # Timeout value for http requests
 # timeout =
 
-auth_url = http://controller:35357
+auth_url = http://{{ api_host }}:35357
 auth_plugin = password
 project_domain_id = default
 user_domain_id = default

@@ -10,7 +10,7 @@
     - "%"
 
 - name: create cinder service entry and endpoint
-  script: create_cinder_service_entity_and_api_endpoint.sh {{ CINDER_PASS }}
+  script: create_cinder_service_entity_and_api_endpoint.sh {{ CINDER_PASS }} {{ api_host }}
   environment: admin_openrc
   sudo: no
 

@@ -10,7 +10,7 @@
     - "%"
 
 - name: create nova service entry and endpoint
-  script: create_nova_service_entity_and_api_endpoint.sh {{ NOVA_PASS }}
+  script: create_nova_service_entity_and_api_endpoint.sh {{ NOVA_PASS }} {{ api_host }}
   environment: admin_openrc
   sudo: no
 

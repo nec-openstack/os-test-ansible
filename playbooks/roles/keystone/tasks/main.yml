@@ -31,7 +31,7 @@
   script: keystone_db_sync.sh
 
 - name: edit apache conf file
-  copy: src=apache2.conf dest=/etc/apache2/apache2.conf
+  template: src=apache2.conf.j2 dest=/etc/apache2/apache2.conf
 
 - name: create wsgi conf file
   copy: src=wsgi-keystone.conf dest=/etc/apache2/sites-available/wsgi-keystone.conf
@@ -45,8 +45,10 @@
 - name: remove the SQLite database file
   file: path=/var/lib/keystone/keystone.db state=absent
 
+- debug: var='api_host'
+
 - name: create the service entity and API endpoint
-  script: create_service_entity_and_api_endpoint.sh
+  script: create_service_entity_and_api_endpoint.sh {{ api_host }}
   environment: temp_auth_token
 
 - name: Create projects, users, and roles

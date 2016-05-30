@@ -6,6 +6,7 @@ internal_ntp_server: controller
 db_host: controller
 rabbit_host: controller
 glance_host: controller
+api_host: controller
 
 controller_mgmt_ip: 10.1.0.11
 network_mgmt_ip: 10.1.0.21
@@ -21,7 +22,7 @@ ADMIN_TOKEN: admin_token
 
 temp_auth_token:
   OS_TOKEN: admin_token
-  OS_URL: http://controller:35357/v3
+  OS_URL: http://{{ api_host }}:35357/v3
   OS_IDENTITY_API_VERSION: 3
 
 ADMIN_PASS: password
@@ -34,7 +35,7 @@ admin_openrc:
   OS_TENANT_NAME: admin
   OS_USERNAME: admin
   OS_PASSWORD: "{{ ADMIN_PASS }}"
-  OS_AUTH_URL: http://controller:35357/v3
+  OS_AUTH_URL: http://{{ api_host }}:35357/v3
   OS_IDENTITY_API_VERSION: 3
 
 demo_openrc:
@@ -44,7 +45,7 @@ demo_openrc:
   OS_TENANT_NAME: demo
   OS_USERNAME: demo
   OS_PASSWORD: "{{ DEMO_PASS }}"
-  OS_AUTH_URL: http://controller:5000/v3
+  OS_AUTH_URL: http://{{ api_host }}:5000/v3
   OS_IDENTITY_API_VERSION: 3
 
 GLANCE_DBPASS: password

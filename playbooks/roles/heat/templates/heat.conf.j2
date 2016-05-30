@@ -181,8 +181,8 @@ rpc_backend = rabbit
 # service (at DEBUG level). (boolean value)
 #log_options = true
 
-heat_metadata_server_url = http://controller:8000
-heat_waitcondition_server_url = http://controller:8000/v1/waitcondition
+heat_metadata_server_url = http://{{ api_host }}:8000
+heat_waitcondition_server_url = http://{{ api_host }}:8000/v1/waitcondition
 
 stack_domain_admin = heat_domain_admin
 stack_domain_admin_password = {{ HEAT_DOMAIN_PASS }}
@@ -450,8 +450,8 @@ connection = mysql+pymysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
 # Service tenant name. (string value)
 #admin_tenant_name = admin
 
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
+auth_uri = http://{{ api_host }}:5000
+auth_url = http://{{ api_host }}:35357
 auth_plugin = password
 project_domain_id = default
 user_domain_id = default
@@ -461,16 +461,16 @@ password = {{ HEAT_PASS }}
 
 [trustee]
 auth_plugin = password
-auth_url = http://controller:35357
+auth_url = http://{{ api_host }}:35357
 username = heat
 password = {{ HEAT_PASS }}
 user_domain_id = default
 
 [clients_keystone]
-auth_uri = http://controller:5000
+auth_uri = http://{{ api_host }}:5000
 
 [ec2authtoken]
-auth_uri = http://controller:5000/v3
+auth_uri = http://{{ api_host }}:5000/v3
 
 [matchmaker_redis]
 
