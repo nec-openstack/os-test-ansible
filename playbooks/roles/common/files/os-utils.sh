@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Grab a numbered field from python prettytable output
+# Fields are numbered starting with 1
+# Reverse syntax is supported: -1 is the last field, -2 is second to last, etc.
+# get_field field-number
+function get_field {
+    local data field
+    while read data; do
+        if [ "$1" -lt 0 ]; then
+            field="(\$(NF$1))"
+        else
+            field="\$$(($1 + 1))"
+        fi
+        echo "$data" | awk -F'[ \t]*\\|[ \t]*' "{print $field}"
+    done
+}
+
 #admin users expected
 function create_or_get_project {
     local name=$1
@@ -11,14 +27,16 @@ function create_or_get_project {
     echo $id
 }
 
+# Gets or creates role
+# Usage: create_or_get_role <name>
 function create_or_get_role {
-    local name=$1
-    local id
-    eval $(openstack role show -f shell -c id $name)
-    if [[ -z $id ]]; then
-        eval $(openstack role create -f shell -c id $name)
-    fi
-    echo $id
+    local role_id
+    role_id=$(
+        # Creates role with --or-show
+        openstack role create $1 \
+            --or-show -f value -c id
+    )
+    echo $role_id
 }
 
 function create_or_get_user {
@@ -34,6 +52,32 @@ function create_or_get_user {
               $name)
   fi
   echo $id
+}
+
+# Gets or adds user role to project
+# Usage: get_or_add_user_project_role <role> <user> <project>
+function get_or_add_user_project_role {
+    local user_role_id
+    # Gets user role id
+    user_role_id=$(openstack role list \
+        --user $2 \
+        --column "ID" \
+        --project $3 \
+        --column "Name" \
+        | grep " $1 " | get_field 1)
+    if [[ -z "$user_role_id" ]]; then
+        # Adds role to user and get it
+        openstack role add $1 \
+            --user $2 \
+            --project $3
+        user_role_id=$(openstack role list \
+            --user $2 \
+            --column "ID" \
+            --project $3 \
+            --column "Name" \
+            | grep " $1 " | get_field 1)
+    fi
+    echo $user_role_id
 }
 
 function create_or_get_service {
