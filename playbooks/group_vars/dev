@@ -8,6 +8,8 @@ rabbit_host: controller
 glance_host: controller
 api_host: controller
 
+api_interface: "eth1"
+
 controller_mgmt_ip: 10.1.0.11
 network_mgmt_ip: 10.1.0.21
 NETWORK_TUNNEL_IP: 10.1.1.21

@@ -14,7 +14,7 @@ enabled_apis=ec2,osapi_compute,metadata
 rpc_backend = rabbit
 auth_strategy = keystone
 
-my_ip = {{ compute1_mgmt_ip }} 
+my_ip = {{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}
 
 network_api_class = nova.network.neutronv2.api.API
 security_group_api = neutron

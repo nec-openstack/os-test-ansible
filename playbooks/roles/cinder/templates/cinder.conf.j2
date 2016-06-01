@@ -11,7 +11,7 @@ lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volume
 
 rpc_backend = rabbit
-my_ip = {{ controller_mgmt_ip }}
+my_ip = {{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}
 
 [database]
 connection = mysql+pymysql://cinder:{{ CINDER_DBPASS }}@{{ db_host }}/cinder
@@ -33,7 +33,3 @@ password = {{ CINDER_PASS }}
 
 [oslo_concurrency]
 lock_path = /var/lib/cinder/tmp
-
-
-
-

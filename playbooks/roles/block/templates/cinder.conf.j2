@@ -11,7 +11,7 @@ lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 
 rpc_backend = rabbit
-my_ip = {{ block1_mgmt_ip }} 
+my_ip = {{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}
 enabled_backends = lvm
 glance_host = {{ glance_host }}
 
@@ -41,5 +41,3 @@ iscsi_helper = tgtadm
 
 [oslo_concurrency]
 lock_path = /var/lib/cinder/tmp
-
-
