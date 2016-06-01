@@ -9,7 +9,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cont.vm.network "private_network", ip: "10.1.0.11"
     cont.vm.provider :virtualbox do |vm|
       vm.memory = 3072
-   end
+    end
+    cont.vm.provision :ansible do |ansible|
+      ansible.playbook = "setup-vagrant.yml"
+      ansible.host_key_checking = false
+    end
   end
 
   config.vm.define "network" do |net|
@@ -22,6 +26,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vm.memory = 1024
       vm.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
     end
+    net.vm.provision :ansible do |ansible|
+      ansible.playbook = "setup-vagrant.yml"
+      ansible.host_key_checking = false
+    end
   end
 
   config.vm.define "compute1" do |com1|
@@ -31,6 +39,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     com1.vm.network "private_network", ip: "10.1.1.31", virtual__intnet: "tunnel"
     com1.vm.provider :virtualbox do |vm|
       vm.memory = 2048
+    end
+    com1.vm.provision :ansible do |ansible|
+      ansible.playbook = "setup-vagrant.yml"
+      ansible.host_key_checking = false
     end
   end
 
@@ -45,12 +57,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
       vb.customize ['storageattach', :id, '--storagectl', 'SATAController', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', at_disk]
     end
+    blk1.vm.provision :ansible do |ansible|
+      ansible.playbook = "setup-vagrant.yml"
+      ansible.host_key_checking = false
+    end
   end
-
-#  config.vm.provision "ansible" do |ansible|
-#    ansible.playbook = "site.yml"
-#    ansible.inventory_path = "dev"
-#    ansible.sudo = true
-#end
 
 end

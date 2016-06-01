@@ -1,0 +1,32 @@
+- hosts: all
+  sudo: True
+
+  tasks:
+    - name: Pushes user's rsa key to users on vagrant box (it's ok if this TASK fails)
+      authorized_key: user={{ item }} key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      register: rsa
+      ignore_errors: yes
+      with_items:
+        - root
+        - vagrant
+
+    - name: Pushes user's dsa key to users on vagrant box (it's NOT ok if both TASKs fail)
+      # action: authorized_key user=root key='$FILE(~/.ssh/id_dsa.pub)'
+      # Workaround for #2372
+      authorized_key: user={{ item }} key="{{ lookup('file', '~/.ssh/id_dsa.pub') }}"
+      when: rsa|failed
+      with_items:
+        - root
+        - vagrant
+
+    - name: Checks if resolver is working properly (issues with some VBox/Host OS combinations)
+      action: command host -t A ansible.com
+      register: ns
+      ignore_errors: yes
+
+    - name: Pushes new resolver configuration is resolver fails
+      action: lineinfile regexp="^nameserver " line="nameserver 8.8.8.8" dest=/etc/resolv.conf
+      when: ns|failed
+
+    - name: Checks if resolver is working properly with new nameserver
+      action: command host -t A ansible.com
