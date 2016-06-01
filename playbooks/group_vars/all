@@ -63,9 +63,9 @@ public_interface: p3p1
 
 mechanism_driver: openvswitch
 
-VIRT_TYPE: kvm
+virt_type: kvm
 
-TIME_ZONE: UTC
+time_zone: UTC
 
 CINDER_DBPASS: password
 CINDER_PASS: password

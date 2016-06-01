@@ -55,9 +55,9 @@ NEUTRON_PASS: password
 
 METADATA_SECRET: secret
 
-VIRT_TYPE: qemu
+virt_type: qemu
 
-TIME_ZONE: UTC
+time_zone: UTC
 
 CINDER_DBPASS: password
 CINDER_PASS: password
