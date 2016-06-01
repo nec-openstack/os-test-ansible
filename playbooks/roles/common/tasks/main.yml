@@ -18,4 +18,18 @@
 - name: Install the OpenStack client
   apt: name=python-openstackclient update_cache=yes cache_valid_time=3600
 
+- name: Create Util directory
+  file:
+    path: "/opt/local/bin"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
 
+- name: Install OpenStack Utilities script
+  copy:
+    src: os-utils.sh
+    dest: /opt/local/bin/os-utils.sh
+    owner: root
+    group: root
+    mode: 0755
