@@ -1,2 +1,2 @@
-#!/bin/sh
-su -s /bin/sh -c "cinder-manage db sync" cinder
+#!/bin/bash
+su -s /bin/bash -c "cinder-manage db sync" cinder

@@ -1,2 +1,2 @@
-#!/bin/sh
-su -s /bin/sh -c "heat-manage db_sync" heat
+#!/bin/bash
+su -s /bin/bash -c "heat-manage db_sync" heat

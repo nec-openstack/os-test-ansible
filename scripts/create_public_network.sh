@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PUBLIC_NETWORK_CIDR=10.2.0.0/24
 START_IP_ADDRESS=10.2.0.201

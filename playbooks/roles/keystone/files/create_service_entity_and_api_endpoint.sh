@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 source /opt/local/bin/os-utils.sh
 
 create_or_get_service keystone identity "OpenStack Identity"

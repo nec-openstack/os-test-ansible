@@ -1,2 +1,2 @@
-#!/bin/sh
-su -s /bin/sh -c "glance-manage db_sync" glance
+#!/bin/bash
+su -s /bin/bash -c "glance-manage db_sync" glance

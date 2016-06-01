@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 openstack domain create --description "Stack projects and users" heat
 openstack user create --domain heat --password $1 heat_domain_admin
 openstack role add --domain heat --user heat_domain_admin admin

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 source /opt/local/bin/os-utils.sh
 
 create_or_get_user glance $1
