@@ -10,6 +10,7 @@ glance_host: "{{ api_host }}"
 
 api_interface: "eth1"
 tunnel_interface: "eth2"
+public_interface: "eth3"
 
 RABBIT_PASS: password
 KEYSTONE_DBPASS: password
@@ -53,8 +54,6 @@ NEUTRON_DBPASS: password
 NEUTRON_PASS: password
 
 METADATA_SECRET: secret
-
-PUBLIC_INTERFACE_NAME: eth3
 
 VIRT_TYPE: qemu
 

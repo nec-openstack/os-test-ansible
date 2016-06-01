@@ -59,7 +59,7 @@ NEUTRON_PASS: password
 
 METADATA_SECRET: secret
 
-PUBLIC_INTERFACE_NAME: p3p1
+public_interface: p3p1
 
 mechanism_driver: openvswitch
 
