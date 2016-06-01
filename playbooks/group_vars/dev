@@ -12,17 +12,10 @@ api_interface: "eth1"
 tunnel_interface: "eth2"
 public_interface: "eth3"
 
-RABBIT_PASS: password
-KEYSTONE_DBPASS: password
-ADMIN_TOKEN: admin_token
-
 temp_auth_token:
   OS_TOKEN: admin_token
   OS_URL: http://{{ api_host }}:35357/v3
   OS_IDENTITY_API_VERSION: 3
-
-ADMIN_PASS: password
-DEMO_PASS: password
 
 admin_openrc:
   OS_PROJECT_DOMAIN_ID: default
@@ -44,24 +37,32 @@ demo_openrc:
   OS_AUTH_URL: http://{{ api_host }}:5000/v3
   OS_IDENTITY_API_VERSION: 3
 
-GLANCE_DBPASS: password
-GLANCE_PASS: password
+virt_type: qemu
+time_zone: UTC
 
-NOVA_DBPASS: password
-NOVA_PASS: password
+GENERAL_PASSWORD: password
 
-NEUTRON_DBPASS: password
-NEUTRON_PASS: password
+RABBIT_PASS: "{{ GENERAL_PASSWORD }}"
+
+KEYSTONE_DBPASS: "{{ GENERAL_PASSWORD }}"
+ADMIN_TOKEN: admin_token
+ADMIN_PASS: "{{ GENERAL_PASSWORD }}"
+DEMO_PASS: "{{ GENERAL_PASSWORD }}"
+
+GLANCE_DBPASS: "{{ GENERAL_PASSWORD }}"
+GLANCE_PASS: "{{ GENERAL_PASSWORD }}"
+
+NOVA_DBPASS: "{{ GENERAL_PASSWORD }}"
+NOVA_PASS: "{{ GENERAL_PASSWORD }}"
+
+NEUTRON_DBPASS: "{{ GENERAL_PASSWORD }}"
+NEUTRON_PASS: "{{ GENERAL_PASSWORD }}"
 
 METADATA_SECRET: secret
 
-virt_type: qemu
+CINDER_DBPASS: "{{ GENERAL_PASSWORD }}"
+CINDER_PASS: "{{ GENERAL_PASSWORD }}"
 
-time_zone: UTC
-
-CINDER_DBPASS: password
-CINDER_PASS: password
-
-HEAT_DBPASS: password
-HEAT_PASS: password
-HEAT_DOMAIN_PASS: password
+HEAT_DBPASS: "{{ GENERAL_PASSWORD }}"
+HEAT_PASS: "{{ GENERAL_PASSWORD }}"
+HEAT_DOMAIN_PASS: "{{ GENERAL_PASSWORD }}"
