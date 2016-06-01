@@ -1,7 +1,9 @@
 #!/bin/sh
-openstack user create --domain default --password $1 neutron
-openstack role add --project service --user neutron admin
-openstack service create --name neutron --description "OpenStack Networking" network
-openstack endpoint create --region RegionOne network public http://$2:9696
-openstack endpoint create --region RegionOne network internal http://$2:9696
-openstack endpoint create --region RegionOne network admin http://$2:9696
+source /opt/local/bin/os-utils.sh
+
+create_or_get_user neutron $1
+get_or_add_user_project_role admin neutron service
+create_or_get_service neutron network "OpenStack Networking"
+create_or_get_endpoint network public http://$2:9696
+create_or_get_endpoint network internal http://$2:9696
+create_or_get_endpoint network admin http://$2:9696
