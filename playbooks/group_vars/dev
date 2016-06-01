@@ -9,6 +9,7 @@ glance_host: controller
 api_host: controller
 
 api_interface: "eth1"
+tunnel_interface: "eth2"
 
 controller_mgmt_ip: 10.1.0.11
 network_mgmt_ip: 10.1.0.21

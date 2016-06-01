@@ -30,7 +30,7 @@ enable_vxlan = True
 # vxlan_group = 224.0.0.1
 #
 # (StrOpt) Local IP address to use for VXLAN endpoints (required)
-local_ip = {{ OVERLAY_INTERFACE_IP_ADDRESS }}
+local_ip = {{ hostvars[inventory_hostname]['ansible_' + tunnel_interface]['ipv4']['address'] }}
 #
 # (BoolOpt) Flag to enable l2population extension. This option should be used
 # in conjunction with ml2 plugin l2population mechanism driver (in that case,
@@ -60,4 +60,3 @@ prevent_arp_spoofing = True
 # It should be false when you use nova security group.
 enable_security_group = True
 firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
-

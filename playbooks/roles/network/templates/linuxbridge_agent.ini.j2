@@ -30,7 +30,7 @@ enable_vxlan = True
 # vxlan_group = 224.0.0.1
 #
 # (StrOpt) Local IP address to use for VXLAN endpoints (required)
-local_ip = {{ NETWORK_TUNNEL_IP }}
+local_ip = {{ hostvars[inventory_hostname]['ansible_' + tunnel_interface]['ipv4']['address'] }}
 #
 # (BoolOpt) Flag to enable l2population extension. This option should be used
 # in conjunction with ml2 plugin l2population mechanism driver (in that case,
