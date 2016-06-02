@@ -10,7 +10,7 @@ script_dir=`dirname $0`
 userdata_dir=${script_dir}/userdata
 
 source ${script_dir}/kvm-settings.sh
-settings=${OS_TEST_KVM_SETTINGS:-_OS_TEST_KVM_SETTINGS}
+settings=("${_OS_TEST_KVM_SETTINGS[@]}")
 _settings=("${settings[@]}")
 
 function wait_host {

@@ -12,7 +12,7 @@ playbooks_dir=${script_dir}/../playbooks
 group_vars_dir=${playbooks_dir}/group_vars
 
 source ${script_dir}/kvm-settings.sh
-settings=${OS_TEST_KVM_SETTINGS:-_OS_TEST_KVM_SETTINGS}
+settings=("${_OS_TEST_KVM_SETTINGS[@]}")
 
 for setting in "${settings[@]}"
 do

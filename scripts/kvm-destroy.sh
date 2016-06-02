@@ -9,7 +9,7 @@ gateway=${5:-"192.168.11.1"}
 script_dir=`dirname $0`
 
 source ${script_dir}/kvm-settings.sh
-settings=${OS_TEST_KVM_SETTINGS:-_OS_TEST_KVM_SETTINGS}
+settings=("${_OS_TEST_KVM_SETTINGS[@]}")
 
 for setting in "${settings[@]}"
 do
