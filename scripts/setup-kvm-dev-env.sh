@@ -1,8 +1,10 @@
 #!/bin/bash
 
-network_address=${1:-"192.168.203"}
-netmask=${2:-"255.255.0.0"}
-gateway=${3:-"192.168.11.1"}
+bridge=${1:-"br0"}
+api_network=${2:"192.168.203"}
+tunnel_network=${3:-"192.168.204"}
+netmask=${4:-"255.255.0.0"}
+gateway=${5:-"192.168.11.1"}
 
 script_dir=`dirname $0`
 userdata_dir=${script_dir}/userdata
@@ -10,37 +12,37 @@ playbooks_dir=${script_dir}/../playbooks
 group_vars_dir=${playbooks_dir}/group_vars
 
 settings=(
-  "haproxy 101"
-  "controller01 11"
-  "network01 21"
-  "compute01 31"
-  "storage01 41"
+  "haproxy haproxy 1 1024 40 101"
+  "controller controller01 2 3072 40 11"
+  "network network01 1 1024 20 21"
+  "compute compute01 2 2048 40 31"
+  "storage storage01 1 2048 40 41"
 )
 
 for setting in "${settings[@]}"
 do
     setting=($setting)
-    bash ${script_dir}/create-user-data.sh ${setting[0]} \
+    bash ${script_dir}/create-user-data.sh ${setting[1]} \
                                            operator \
-                                           ${network_address}.${setting[1]}  \
+                                           ${api_network}.${setting[5]}  \
                                            ${netmask} \
-                                           ${gateway} > "${userdata_dir}/${setting[0]}.cfg"
+                                           ${gateway} > "${userdata_dir}/${setting[1]}.cfg"
 done
 
 cat > ${group_vars_dir}/kvm <<EOS
 ---
-api_host: ${network_address}/11
+api_host: ${api_network}/11
 api_interface: "eth0"
 tunnel_interface: "eth1"
-public_interface: "eth3"
+public_interface: "eth2"
 EOS
 
 cat > ${playbooks_dir}/kvm <<EOS
-haproxy ansible_ssh_host=${network_address}.101 ansible_ssh_user=operator
-controller ansible_ssh_host=${network_address}.11 ansible_ssh_user=operator
-network ansible_ssh_host=${network_address}.21 ansible_ssh_user=operator
-compute1 ansible_ssh_host=${network_address}.31 ansible_ssh_user=operator
-block1 ansible_ssh_host=${network_address}.41 ansible_ssh_user=operator
+haproxy ansible_ssh_host=${api_network}.101 ansible_ssh_user=operator
+controller ansible_ssh_host=${api_network}.11 ansible_ssh_user=operator
+network ansible_ssh_host=${api_network}.21 ansible_ssh_user=operator
+compute1 ansible_ssh_host=${api_network}.31 ansible_ssh_user=operator
+block1 ansible_ssh_host=${api_network}.41 ansible_ssh_user=operator
 
 [haproxy]
 haproxy
