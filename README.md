@@ -33,7 +33,25 @@ $ source demo-openrc.sh
 $ ./create_private_network.sh
 </pre>
 
-#### Result
+### Deploy OpenStack using KVM
+
+#### Pre requirements
+
+* uvt-kvm
+* setup bridge named "br0"
+
+#### Install Openstack
+
+<pre>
+$ uvt-simplestreams-libvirt sync release=trusty arch=amd64
+$ # Please modify network settings
+$ bash scripts/setup-kvm-dev-env.sh 192.168.203 255.255.255.0 192.168.11.1
+$ bash scripts/kvm-up.sh br0
+$ cd playbooks
+$ ansible-playbook -i kvm -e@group_vars/kvm site.yml
+</pre>
+
+## Result
 
 <pre>
 
@@ -48,7 +66,7 @@ $ ./create_private_network.sh
        |              |  ------------   |         |
        |              |                 |         |
  ---------------------------------------------------------
- 
+
  </pre>
 
 ## License
