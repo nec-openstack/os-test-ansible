@@ -1,7 +1,7 @@
 #!/bin/bash
 
 hostname=${1:-"openstack.local"}
-username=${2:-"operator"}
+username=${2:-"kolla"}
 ip=${3:-"192.168.203.11"}
 netmask=${4:-"255.255.0.0"}
 gateway=${5:-"192.168.11.1"}
@@ -30,8 +30,4 @@ runcmd:
   - [ ifdown, eth0 ]
   - [ ifup, eth0 ]
 
-packages:
-  - git
-  - vim
-  - openvswitch-switch
 EOS

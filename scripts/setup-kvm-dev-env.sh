@@ -18,7 +18,7 @@ for setting in "${settings[@]}"
 do
     setting=($setting)
     bash ${script_dir}/create-user-data.sh ${setting[1]} \
-                                           operator \
+                                           kolla \
                                            ${api_network}.${setting[5]}  \
                                            ${netmask} \
                                            ${gateway} > "${userdata_dir}/${setting[1]}.cfg"
@@ -33,11 +33,11 @@ public_interface: "eth2"
 EOS
 
 cat > ${playbooks_dir}/kvm <<EOS
-haproxy ansible_ssh_host=${api_network}.101 ansible_ssh_user=operator
-controller ansible_ssh_host=${api_network}.11 ansible_ssh_user=operator
-network ansible_ssh_host=${api_network}.21 ansible_ssh_user=operator
-compute1 ansible_ssh_host=${api_network}.31 ansible_ssh_user=operator
-block1 ansible_ssh_host=${api_network}.41 ansible_ssh_user=operator
+haproxy ansible_ssh_host=${api_network}.101 ansible_ssh_user=kolla
+controller ansible_ssh_host=${api_network}.11 ansible_ssh_user=kolla
+network ansible_ssh_host=${api_network}.21 ansible_ssh_user=kolla
+compute1 ansible_ssh_host=${api_network}.31 ansible_ssh_user=kolla
+block1 ansible_ssh_host=${api_network}.41 ansible_ssh_user=kolla
 
 [haproxy]
 haproxy

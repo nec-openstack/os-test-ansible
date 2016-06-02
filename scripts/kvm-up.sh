@@ -36,7 +36,7 @@ function wait_host {
 function ssh_target {
   local target=$1
   local script=$2
-  ssh operator@${target} -o StrictHostKeyChecking=no \
+  ssh kolla@${target} -o StrictHostKeyChecking=no \
                          -o UserKnownHostsFile=/dev/null \
                          "${script}"
 }
