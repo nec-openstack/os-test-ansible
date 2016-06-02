@@ -9,13 +9,8 @@ gateway=${5:-"192.168.11.1"}
 script_dir=`dirname $0`
 userdata_dir=${script_dir}/userdata
 
-settings=(
-  "haproxy haproxy 1 1024 40 101"
-  "controller controller01 2 3072 40 11"
-  "network network01 1 1024 20 21"
-  "compute compute01 2 2048 40 31"
-  "storage storage01 1 2048 40 41"
-)
+source ${script_dir}/kvm-settings.sh
+settings=${OS_TEST_KVM_SETTINGS:-_OS_TEST_KVM_SETTINGS}
 _settings=("${settings[@]}")
 
 function wait_host {
