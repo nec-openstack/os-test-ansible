@@ -47,12 +47,12 @@ $ ./create_private_network.sh
     $ bash scripts/setup-kvm-dev-env.sh br0 \
                                         192.168.203 \
                                         192.168.204 \
-                                        255.255.255.0 \
+                                        255.255.0.0 \
                                         192.168.11.1
     $ bash scripts/kvm-up.sh br0 \
                              192.168.203 \
                              192.168.204 \
-                             255.255.255.0 \
+                             255.255.0.0 \
                              192.168.11.1
     $ cd playbooks
     $ ansible-playbook -i kvm -e@group_vars/kvm site.yml

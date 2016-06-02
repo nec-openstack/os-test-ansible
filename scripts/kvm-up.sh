@@ -16,6 +16,7 @@ settings=(
   "compute compute01 2 2048 40 31"
   "storage storage01 1 2048 40 41"
 )
+_settings=("${settings[@]}")
 
 function wait_host {
   local target=$1
@@ -41,14 +42,15 @@ for setting in "${settings[@]}"
 do
     setting=($setting)
     echo "Creating ${setting[1]} node..."
-    uvt-kvm create ${setting[1]} release=trusty \
+    echo "uvt-kvm create ${setting[1]} release=trusty \
               --bridge ${bridge} --cpu ${setting[2]} \
               --memory ${setting[3]} --disk ${setting[4]} \
-              --user-data ${userdata_dir}/${setting[1]}.cfg
+              --user-data ${userdata_dir}/${setting[1]}.cfg"
 done
 
-for setting in "${settings[@]}"
+for setting in "${_settings[@]}"
 do
+    setting=($setting)
     wait_host ${api_network}.${setting[5]}
 
     if [[ ${setting[0]} = 'network' ]] || [[ ${setting[0]} = 'compute' ]]; then
@@ -70,10 +72,10 @@ do
 
     if [[ ${setting[0]} = 'network' ]]; then
       echo "Attach interface for public to ${setting[1]}"
-      echo "virsh attach-interface --type bridge \
+      virsh attach-interface --type bridge \
                              --source ${bridge} \
                              --model virtio \
-                             ${setting[1]}"
+                             ${setting[1]}
       sleep 1
       ssh operator@${api_network}.${setting[5]} "sudo echo 'auto eth2' > /etc/network/interfaces.d/eth2.cfg"
       ssh operator@${api_network}.${setting[5]} "sudo echo 'iface eth2 inet manual' >> /etc/network/interfaces.d/eth2.cfg"
