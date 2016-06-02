@@ -26,7 +26,7 @@ done
 
 cat > ${group_vars_dir}/kvm <<EOS
 ---
-api_host: ${api_network}/11
+api_host: ${api_network}.11
 api_interface: "eth0"
 tunnel_interface: "eth1"
 public_interface: "eth2"
