@@ -57,6 +57,10 @@ $ ./create_private_network.sh
     $ cd playbooks
     $ ansible-playbook -i kvm -e@group_vars/kvm site.yml
 
+#### Destroy environment
+
+    $ bash scripts/kvm-destroy.sh
+
 ## Result
 
 <pre>
