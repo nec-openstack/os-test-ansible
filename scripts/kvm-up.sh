@@ -42,10 +42,10 @@ for setting in "${settings[@]}"
 do
     setting=($setting)
     echo "Creating ${setting[1]} node..."
-    echo "uvt-kvm create ${setting[1]} release=trusty \
+    uvt-kvm create ${setting[1]} release=trusty \
               --bridge ${bridge} --cpu ${setting[2]} \
               --memory ${setting[3]} --disk ${setting[4]} \
-              --user-data ${userdata_dir}/${setting[1]}.cfg"
+              --user-data ${userdata_dir}/${setting[1]}.cfg
 done
 
 for setting in "${_settings[@]}"
