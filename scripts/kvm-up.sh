@@ -17,6 +17,26 @@ settings=(
   "storage storage01 1 2048 40 41"
 )
 
+function wait_host {
+  local target=$1
+  echo "Waiting ${target}..."
+  ((count = 100))
+  while [[ $count -ne 0 ]] ; do
+    ping -c 1 ${target}
+    rc=$?
+    if [[ $rc -eq 0 ]] ; then
+        ((count = 1))
+    fi
+    ((count = count - 1))
+  done
+
+  if [[ $rc -eq 0 ]] ; then
+    echo "Connected: ${target}"
+  else
+    exit 1
+  fi
+}
+
 for setting in "${settings[@]}"
 do
     setting=($setting)
@@ -25,6 +45,11 @@ do
               --bridge ${bridge} --cpu ${setting[2]} \
               --memory ${setting[3]} --disk ${setting[4]} \
               --user-data ${userdata_dir}/${setting[1]}.cfg
+done
+
+for setting in "${settings[@]}"
+do
+    wait_host ${api_network}.${setting[5]}
 
     if [[ ${setting[0]} = 'network' ]] || [[ ${setting[0]} = 'compute' ]]; then
       echo "Attach interface for tunnel to ${setting[1]}"
