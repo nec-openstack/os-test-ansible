@@ -4,3 +4,4 @@
 playbooks/group_vars/kvm
 playbooks/kvm
 scripts/userdata/*.cfg
+scripts/*-openrc-kvm.sh

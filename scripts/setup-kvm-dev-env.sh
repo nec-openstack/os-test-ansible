@@ -24,6 +24,31 @@ do
                                            ${gateway} > "${userdata_dir}/${setting[1]}.cfg"
 done
 
+# FIXME: OS_AUTH_URL should be haproxy
+cat > ${script_dir}/admin-openrc-kvm.sh <<EOS
+export OS_PROJECT_DOMAIN_ID=default
+export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_NAME=admin
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=password
+export OS_AUTH_URL=http://${api_network}.11:35357
+export OS_IDENTITY_API_VERSION=3
+EOS
+
+# FIXME: OS_AUTH_URL should be haproxy
+cat > ${script_dir}/demo-openrc-kvm.sh <<EOS
+export OS_PROJECT_DOMAIN_ID=default
+export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_NAME=demo
+export OS_TENANT_NAME=demo
+export OS_USERNAME=demo
+export OS_PASSWORD=password
+export OS_AUTH_URL=http://${api_network}.11:5000
+export OS_IDENTITY_API_VERSION=3
+EOS
+
+# FIXME: api_host should be haproxy
 cat > ${group_vars_dir}/kvm <<EOS
 ---
 api_host: ${api_network}.11
@@ -32,28 +57,43 @@ tunnel_interface: "eth1"
 public_interface: "eth2"
 EOS
 
-cat > ${playbooks_dir}/kvm <<EOS
-haproxy ansible_ssh_host=${api_network}.101 ansible_ssh_user=kolla
-controller ansible_ssh_host=${api_network}.11 ansible_ssh_user=kolla
-network ansible_ssh_host=${api_network}.21 ansible_ssh_user=kolla
-compute1 ansible_ssh_host=${api_network}.31 ansible_ssh_user=kolla
-block1 ansible_ssh_host=${api_network}.41 ansible_ssh_user=kolla
+echo "[haproxy]" > ${playbooks_dir}/kvm
+echo "haproxy ansible_ssh_host=${api_network}.${HAPROXY[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+echo "" >> ${playbooks_dir}/kvm
 
-[haproxy]
-haproxy
+echo "[controller]" >> ${playbooks_dir}/kvm
+for setting in "${OS_TEST_CONTROLLERS[@]}"
+do
+  setting=($setting)
+  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+done
+echo "" >> ${playbooks_dir}/kvm
 
-[controller]
-controller
+echo "[network]" >> ${playbooks_dir}/kvm
+for setting in "${OS_TEST_NETWORKS[@]}"
+do
+  setting=($setting)
+  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+done
+echo "" >> ${playbooks_dir}/kvm
 
-[network]
-network
+echo "[computes]" >> ${playbooks_dir}/kvm
+for setting in "${OS_TEST_COMPUTES[@]}"
+do
+  setting=($setting)
+  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+done
+echo "" >> ${playbooks_dir}/kvm
 
-[computes]
-compute1
+echo "[blocks]" >> ${playbooks_dir}/kvm
+for setting in "${OS_TEST_STORAGES[@]}"
+do
+  setting=($setting)
+  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+done
+echo "" >> ${playbooks_dir}/kvm
 
-[blocks]
-block1
-
+cat >> ${playbooks_dir}/kvm <<EOS
 [dev:children]
 haproxy
 controller
