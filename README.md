@@ -57,6 +57,13 @@ $ ./create_private_network.sh
     $ cd playbooks
     $ ansible-playbook -i kvm -e@group_vars/kvm site.yml
 
+#### Create virtual networks
+
+    $ source scripts/admin-openrc-kvm.sh
+    $ bash scripts/create_public_network.sh
+    $ source scripts/demo-openrc-kvm.sh
+    $ bash scripts/create_private_network.sh
+
 #### Destroy environment
 
     $ bash scripts/kvm-destroy.sh
