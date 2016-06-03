@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PRIVATE_NETWORK_CIDR=172.16.1.0/24
-PRIVATE_NETWORK_GATEWAY=172.16.1.1
+PRIVATE_NETWORK_CIDR=${1:-"172.16.1.0/24"}
+PRIVATE_NETWORK_GATEWAY=${2:-"172.16.1.1"}
 
 neutron net-create private
 
@@ -13,6 +13,3 @@ neutron router-create router
 neutron router-interface-add router private
 
 neutron router-gateway-set router public
-
-
-
