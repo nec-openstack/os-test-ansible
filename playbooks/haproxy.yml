@@ -1,3 +1,5 @@
-- hosts: haproxy
+- hosts:
+    - controller
+    - haproxy
   roles:
     - haproxy

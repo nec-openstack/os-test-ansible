@@ -5,19 +5,23 @@
     repo: "ppa:vbernat/haproxy-1.5"
     update_cache: yes
     state: present
+  when: inventory_hostname in groups['haproxy']
 
 - name: Install haproxy
   apt:
     name: haproxy
     update_cache: yes
     cache_valid_time: 3600
+  when: inventory_hostname in groups['haproxy']
 
 - name: Install haproxy conf file
   template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
+  when: inventory_hostname in groups['haproxy']
 
 - name: Restart haproxy
   service:
     name: haproxy
     state: restarted
+  when: inventory_hostname in groups['haproxy']
