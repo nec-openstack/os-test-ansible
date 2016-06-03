@@ -60,9 +60,9 @@ $ ./create_private_network.sh
 #### Create virtual networks
 
     $ source scripts/admin-openrc-kvm.sh
-    $ bash scripts/create_public_network.sh "192.168.204.0/24" \
-                                            "192.168.204.10" \
-                                            "192.168.204.255"
+    $ bash scripts/create_public_network.sh "192.168.203.0/24" \
+                                            "192.168.203.60" \
+                                            "192.168.203.99"
     $ source scripts/demo-openrc-kvm.sh
     $ bash scripts/create_private_network.sh
 
