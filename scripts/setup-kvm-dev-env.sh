@@ -2,7 +2,7 @@
 
 bridge=${1:-"br0"}
 api_network=${2:-"192.168.203"}
-tunnel_network=${3:-"192.168.204"}
+tunnel_network=${3:-"192.168.203"}
 netmask=${4:-"255.255.0.0"}
 gateway=${5:-"192.168.11.1"}
 
@@ -24,6 +24,8 @@ do
                                            ${gateway} > "${userdata_dir}/${setting[1]}.cfg"
 done
 
+controller=${OS_TEST_CONTROLLERS[0]}
+controller=(${controller})
 # FIXME: OS_AUTH_URL should be haproxy
 cat > ${script_dir}/admin-openrc-kvm.sh <<EOS
 export OS_PROJECT_DOMAIN_ID=default
@@ -32,7 +34,7 @@ export OS_PROJECT_NAME=admin
 export OS_TENANT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=password
-export OS_AUTH_URL=http://${api_network}.11:35357
+export OS_AUTH_URL=http://${api_network}.${controller[5]}:35357
 export OS_IDENTITY_API_VERSION=3
 EOS
 
@@ -44,14 +46,14 @@ export OS_PROJECT_NAME=demo
 export OS_TENANT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=password
-export OS_AUTH_URL=http://${api_network}.11:5000
+export OS_AUTH_URL=http://${api_network}.${controller[5]}:5000
 export OS_IDENTITY_API_VERSION=3
 EOS
 
 # FIXME: api_host should be haproxy
 cat > ${group_vars_dir}/kvm <<EOS
 ---
-api_host: ${api_network}.11
+api_host: ${api_network}.${controller[5]}
 api_interface: "eth0"
 tunnel_interface: "eth1"
 public_interface: "eth2"

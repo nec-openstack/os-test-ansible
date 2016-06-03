@@ -46,12 +46,12 @@ $ ./create_private_network.sh
     $ # Please modify network settings
     $ bash scripts/setup-kvm-dev-env.sh br0 \
                                         192.168.203 \
-                                        192.168.204 \
+                                        192.168.203 \
                                         255.255.0.0 \
                                         192.168.11.1
     $ bash scripts/kvm-up.sh br0 \
                              192.168.203 \
-                             192.168.204 \
+                             192.168.203 \
                              255.255.0.0 \
                              192.168.11.1
     $ cd playbooks
@@ -60,9 +60,9 @@ $ ./create_private_network.sh
 #### Create virtual networks
 
     $ source scripts/admin-openrc-kvm.sh
-    $ bash scripts/create_public_network.sh "192.168.205.0/24" \
-                                            "192.168.205.1" \
-                                            "192.168.205.255"
+    $ bash scripts/create_public_network.sh "192.168.204.0/24" \
+                                            "192.168.204.10" \
+                                            "192.168.204.255"
     $ source scripts/demo-openrc-kvm.sh
     $ bash scripts/create_private_network.sh
 

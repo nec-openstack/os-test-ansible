@@ -2,7 +2,7 @@
 
 bridge=${1:-"br0"}
 api_network=${2:-"192.168.203"}
-tunnel_network=${3:-"192.168.204"}
+tunnel_network=${3:-"192.168.203"}
 netmask=${4:-"255.255.0.0"}
 gateway=${5:-"192.168.11.1"}
 
@@ -65,7 +65,7 @@ do
       sleep 1
       ssh_target ${api_network}.${setting[5]} "echo 'auto eth1' > /etc/network/interfaces.d/eth1.cfg"
       ssh_target ${api_network}.${setting[5]} "echo 'iface eth1 inet static' >> /etc/network/interfaces.d/eth1.cfg"
-      ssh_target ${api_network}.${setting[5]} "echo '  address ${tunnel_network}.${setting[5]}' >> /etc/network/interfaces.d/eth1.cfg"
+      ssh_target ${api_network}.${setting[5]} "echo '  address ${tunnel_network}.${setting[6]}' >> /etc/network/interfaces.d/eth1.cfg"
       ssh_target ${api_network}.${setting[5]} "echo '  netmask ${netmask}' >> /etc/network/interfaces.d/eth1.cfg"
       ssh_target ${api_network}.${setting[5]} "echo '  gateway ${gateway}' >> /etc/network/interfaces.d/eth1.cfg"
       ssh_target ${api_network}.${setting[5]} "echo '  dns-nameservers 8.8.8.8' >> /etc/network/interfaces.d/eth1.cfg"
