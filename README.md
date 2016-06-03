@@ -33,7 +33,7 @@ $ source demo-openrc.sh
 $ ./create_private_network.sh
 </pre>
 
-### Deploy OpenStack using KVM
+### Deploy OpenStack using uvt-kvm
 
 #### Pre requirements
 
