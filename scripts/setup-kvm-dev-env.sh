@@ -24,9 +24,9 @@ do
                                            ${gateway} > "${userdata_dir}/${setting[1]}.cfg"
 done
 
+HAPROXY=(${OS_TEST_HAPROXY})
 controller=${OS_TEST_CONTROLLERS[0]}
 controller=(${controller})
-# FIXME: OS_AUTH_URL should be haproxy
 cat > ${script_dir}/admin-openrc-kvm.sh <<EOS
 export OS_PROJECT_DOMAIN_ID=default
 export OS_USER_DOMAIN_ID=default
@@ -34,11 +34,10 @@ export OS_PROJECT_NAME=admin
 export OS_TENANT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=password
-export OS_AUTH_URL=http://${api_network}.${controller[5]}:35357
+export OS_AUTH_URL=http://${api_network}.${HAPROXY[5]}:35357
 export OS_IDENTITY_API_VERSION=3
 EOS
 
-# FIXME: OS_AUTH_URL should be haproxy
 cat > ${script_dir}/demo-openrc-kvm.sh <<EOS
 export OS_PROJECT_DOMAIN_ID=default
 export OS_USER_DOMAIN_ID=default
@@ -46,14 +45,15 @@ export OS_PROJECT_NAME=demo
 export OS_TENANT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=password
-export OS_AUTH_URL=http://${api_network}.${controller[5]}:5000
+export OS_AUTH_URL=http://${api_network}.${HAPROXY[5]}:5000
 export OS_IDENTITY_API_VERSION=3
 EOS
 
-# FIXME: api_host should be haproxy
 cat > ${group_vars_dir}/kvm <<EOS
 ---
-api_host: ${api_network}.${controller[5]}
+api_host: "${api_network}.${HAPROXY[5]}"
+db_host: "${api_network}.${controller[5]}"
+rabbit_host: "${api_network}.${controller[5]}"
 api_interface: "eth0"
 tunnel_interface: "eth1"
 public_interface: "eth2"
