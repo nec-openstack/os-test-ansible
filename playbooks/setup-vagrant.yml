@@ -1,5 +1,5 @@
 - hosts: all
-  sudo: True
+  become: True
 
   tasks:
     - name: Pushes user's rsa key to users on vagrant box (it's ok if this TASK fails)

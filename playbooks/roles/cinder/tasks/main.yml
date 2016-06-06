@@ -2,7 +2,7 @@
 
 - name: create database
   mysql_db: name=cinder state=present
-  
+
 - name: create cinder user
   mysql_user: name=cinder host={{ item }} password={{ CINDER_DBPASS }} priv=cinder.*:ALL state=present
   with_items:
@@ -12,7 +12,7 @@
 - name: create cinder service entry and endpoint
   script: create_cinder_service_entity_and_api_endpoint.sh {{ CINDER_PASS }} {{ api_host }}
   environment: "{{ admin_openrc }}"
-  sudo: no
+  become: no
 
 - name: install cinder packages
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
@@ -29,12 +29,12 @@
 
 - name: Restart the Compute API service
   service: name=nova-api state=restarted
- 
+
 - name: Restart the Block Storage services
   service: name={{ item }} state=restarted
   with_items:
     - cinder-scheduler
     - cinder-api
- 
+
 - name: remove the SQLite database file
   file: path=/var/lib/cinder/cinder.sqlite state=absent

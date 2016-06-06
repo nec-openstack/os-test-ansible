@@ -12,7 +12,7 @@
 - name: create glance service entry and endpoint
   script: create_glance_service_entity_and_api_endpoint.sh {{ GLANCE_PASS }} {{ api_host}}
   environment: "{{ admin_openrc }}"
-  sudo: no
+  become: no
 
 - name: install glance packages
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
