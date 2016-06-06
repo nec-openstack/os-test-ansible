@@ -1,8 +1,9 @@
 #!/bin/bash
-openstack domain create --description "Stack projects and users" heat
-openstack user create --domain heat --password $1 heat_domain_admin
-openstack role add --domain heat --user heat_domain_admin admin
-openstack role create heat_stack_owner
-openstack role add --project demo --user demo heat_stack_owner
-openstack role create heat_stack_user
+source /opt/local/bin/os-utils.sh
 
+get_or_create_domain heat "Stack projects and users"
+create_or_get_user heat_domain_admin $1 heat
+get_or_add_user_domain_role admin heat_domain_admin heat
+create_or_get_role heat_stack_owner
+get_or_add_user_project_role heat_stack_owner demo demo
+create_or_get_role heat_stack_user
