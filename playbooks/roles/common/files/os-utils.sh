@@ -16,6 +16,23 @@ function get_field {
     done
 }
 
+# Gets or creates a domain
+# Usage: get_or_create_domain <name> <description>
+function get_or_create_domain {
+    local domain_id
+    # Gets domain id
+    domain_id=$(
+        # Gets domain id
+        openstack domain show $1 \
+            -f value -c id 2>/dev/null ||
+        # Creates new domain
+        openstack domain create $1 \
+            --description "$2" \
+            -f value -c id
+    )
+    echo $domain_id
+}
+
 #admin users expected
 function create_or_get_project {
     local name=$1
