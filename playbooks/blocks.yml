@@ -3,3 +3,4 @@
     - common
     - ntp_client
     - block
+  become: yes

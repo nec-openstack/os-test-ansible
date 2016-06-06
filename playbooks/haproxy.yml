@@ -3,3 +3,4 @@
     - haproxy
   roles:
     - haproxy
+  become: yes
