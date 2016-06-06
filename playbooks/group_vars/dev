@@ -1,5 +1,5 @@
 ---
-api_host: 10.1.0.11
+api_host: 10.1.0.101
 
 ntp_server: ntp.jst.mfeed.ad.jp
 internal_ntp_server: "{{ api_host }}"

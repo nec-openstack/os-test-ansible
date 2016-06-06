@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     haproxy.vm.hostname = "controller"
     haproxy.vm.network "private_network", ip: "10.1.0.101"
     haproxy.vm.provider :virtualbox do |vm|
-      vm.memory = 1024
+      vm.memory = 2048
     end
     haproxy.vm.provision :ansible do |ansible|
       ansible.playbook = "setup-vagrant.yml"
@@ -21,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cont.vm.hostname = "controller"
     cont.vm.network "private_network", ip: "10.1.0.11"
     cont.vm.provider :virtualbox do |vm|
-      vm.memory = 3072
+      vm.memory = 2048
     end
     cont.vm.provision :ansible do |ansible|
       ansible.playbook = "setup-vagrant.yml"

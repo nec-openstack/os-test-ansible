@@ -3,14 +3,14 @@
 if [[ $OS_TEST_HAPROXY ]]; then
   echo ${OS_TEST_HAPROXY}
 else
-  export OS_TEST_HAPROXY="haproxy haproxy 1 1024 40 101 201"
+  export OS_TEST_HAPROXY="haproxy haproxy 1 2048 40 101 201"
 fi
 
 if [[ $OS_TEST_CONTROLLERS ]]; then
   echo ${OS_TEST_CONTROLLERS[@]}
 else
   export OS_TEST_CONTROLLERS=(
-    "controller controller01 2 3072 40 11 111"
+    "controller controller01 2 2048 40 11 111"
   )
 fi
 

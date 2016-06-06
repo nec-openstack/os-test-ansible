@@ -52,8 +52,8 @@ EOS
 cat > ${group_vars_dir}/kvm <<EOS
 ---
 api_host: "${api_network}.${HAPROXY[5]}"
-db_host: "${api_network}.${controller[5]}"
-rabbit_host: "${api_network}.${controller[5]}"
+db_host: "${api_network}.${HAPROXY[5]}"
+rabbit_host: "${api_network}.${HAPROXY[5]}"
 api_interface: "eth0"
 tunnel_interface: "eth1"
 public_interface: "eth2"

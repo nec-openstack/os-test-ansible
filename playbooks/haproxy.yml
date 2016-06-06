@@ -2,5 +2,9 @@
     - controller
     - haproxy
   roles:
+    - common
+    - ntp_server
     - haproxy
+    - mariadb
+    - rabbitmq
   become: yes

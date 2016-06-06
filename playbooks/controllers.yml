@@ -2,8 +2,6 @@
   roles:
     - common
     - ntp_server
-    - mariadb
-    - rabbitmq
     - keystone
     - glance
     - nova
