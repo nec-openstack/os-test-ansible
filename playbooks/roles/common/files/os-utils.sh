@@ -59,12 +59,13 @@ function create_or_get_role {
 function create_or_get_user {
   local name=$1
   local password=$2
+  local domain=${3:-'default'}
   local id
   eval $(openstack user show -f shell -c id $name)
   if [[ -z $id ]]; then
       eval $(openstack user create \
               -f shell -c id \
-              --domain default \
+              --domain ${domain} \
               --password $password \
               $name)
   fi
