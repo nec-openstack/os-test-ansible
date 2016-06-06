@@ -66,3 +66,37 @@ demo_openrc:
 
 virt_type: qemu
 time_zone: UTC
+
+mariadb_databases:
+  - cinder
+  - glance
+  - heat
+  - keystone
+  - neutron
+  - nova
+
+mariadb_users:
+  - name: cinder
+    password: "{{ CINDER_DBPASS }}"
+    priv: "cinder.*:ALL"
+    host: "%"
+  - name: glance
+    password: "{{ GLANCE_DBPASS }}"
+    priv: "glance.*:ALL"
+    host: "%"
+  - name: heat
+    password: "{{ HEAT_DBPASS }}"
+    priv: "heat.*:ALL"
+    host: "%"
+  - name: keystone
+    password: "{{ KEYSTONE_DBPASS }}"
+    priv: "keystone.*:ALL"
+    host: "%"
+  - name: neutron
+    password: "{{ NEUTRON_DBPASS }}"
+    priv: "neutron.*:ALL"
+    host: "%"
+  - name: nova
+    password: "{{ NOVA_DBPASS }}"
+    priv: "nova.*:ALL"
+    host: "%"

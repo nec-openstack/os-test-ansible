@@ -1,14 +1,5 @@
 ---
 
-- name: create database
-  mysql_db: name=glance state=present
-
-- name: create glance user
-  mysql_user: name=glance host={{ item }} password={{ GLANCE_DBPASS }} priv=glance.*:ALL state=present
-  with_items:
-    - localhost
-    - "%"
-
 - name: create glance service entry and endpoint
   script: create_glance_service_entity_and_api_endpoint.sh {{ GLANCE_PASS }} {{ api_host}}
   environment: "{{ admin_openrc }}"

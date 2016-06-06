@@ -12,5 +12,21 @@
 - name: restart mariadb
   service: name=mysql state=restarted
 
-# TODO:mysql_secure_installation
+- name: Install the Python MySQLDB module
+  apt: name=python-mysqldb
 
+- name: create database
+  mysql_db:
+    name: "{{ item }}"
+  with_items: "{{ mariadb_databases }}"
+
+- name: create cinder user
+  mysql_user:
+    name: "{{ item.name }}"
+    host: "{{ item.host }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
+    state: present
+  with_items: "{{ mariadb_users }}"
+
+# TODO:mysql_secure_installation

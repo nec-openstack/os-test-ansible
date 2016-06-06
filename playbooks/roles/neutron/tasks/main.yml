@@ -1,14 +1,5 @@
 ---
 
-- name: create database
-  mysql_db: name=neutron state=present
-
-- name: create neutron user
-  mysql_user: name=neutron host={{ item }} password={{ NEUTRON_DBPASS }} priv=neutron.*:ALL state=present
-  with_items:
-    - localhost
-    - "%"
-
 - name: create neutron service entry and endpoint
   script: create_neutron_service_entity_and_api_endpoint.sh {{ NEUTRON_PASS }} {{ api_host }}
   environment: "{{ admin_openrc }}"

@@ -1,14 +1,5 @@
 ---
 
-- name: create database
-  mysql_db: name=nova state=present
-
-- name: create nova user
-  mysql_user: name=nova host={{ item }} password={{ NOVA_DBPASS }} priv=nova.*:ALL state=present
-  with_items:
-    - localhost
-    - "%"
-
 - name: create nova service entry and endpoint
   script: create_nova_service_entity_and_api_endpoint.sh {{ NOVA_PASS }} {{ api_host }}
   environment: "{{ admin_openrc }}"

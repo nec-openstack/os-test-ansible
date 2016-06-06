@@ -1,14 +1,5 @@
 ---
 
-- name: create database
-  mysql_db: name=cinder state=present
-
-- name: create cinder user
-  mysql_user: name=cinder host={{ item }} password={{ CINDER_DBPASS }} priv=cinder.*:ALL state=present
-  with_items:
-    - localhost
-    - "%"
-
 - name: create cinder service entry and endpoint
   script: create_cinder_service_entity_and_api_endpoint.sh {{ CINDER_PASS }} {{ api_host }}
   environment: "{{ admin_openrc }}"

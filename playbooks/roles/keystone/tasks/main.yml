@@ -1,17 +1,5 @@
 ---
 
-- name: Install the Python MySQLDB module
-  apt: name=python-mysqldb
-
-- name: create database
-  mysql_db: name=keystone state=present
-
-- name: create keystone user
-  mysql_user: name=keystone host={{ item }} password={{ KEYSTONE_DBPASS }} priv=keystone.*:ALL state=present
-  with_items:
-    - localhost
-    - "%"
-
 - name: Disable the keystone service from starting automatically after installation
   script: disable_auto_start_keystone_service.sh
 
