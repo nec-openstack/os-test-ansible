@@ -1,7 +1,5 @@
 - hosts: controller
   roles:
-    - common
-    - ntp_server
     - keystone
     - glance
     - nova

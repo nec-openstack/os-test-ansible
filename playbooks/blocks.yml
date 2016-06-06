@@ -1,6 +1,4 @@
 - hosts: blocks
   roles:
-    - common
-    - ntp_client
     - block
   become: yes

@@ -1,0 +1,10 @@
+- hosts:
+    - haproxy
+    - controller
+    - network
+    - computes
+    - blocks
+  roles:
+    - common
+    - ntp_client
+  become: yes
