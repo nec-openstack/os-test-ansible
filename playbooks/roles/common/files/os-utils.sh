@@ -98,6 +98,32 @@ function get_or_add_user_project_role {
     echo $user_role_id
 }
 
+# Gets or adds user role to domain
+# Usage: get_or_add_user_domain_role <role> <user> <domain>
+function get_or_add_user_domain_role {
+    local user_role_id
+    # Gets user role id
+    user_role_id=$(openstack role list \
+        --user $2 \
+        --column "ID" \
+        --domain $3 \
+        --column "Name" \
+        | grep " $1 " | get_field 1)
+    if [[ -z "$user_role_id" ]]; then
+        # Adds role to user and get it
+        openstack role add $1 \
+            --user $2 \
+            --domain $3
+        user_role_id=$(openstack role list \
+            --user $2 \
+            --column "ID" \
+            --domain $3 \
+            --column "Name" \
+            | grep " $1 " | get_field 1)
+    fi
+    echo $user_role_id
+}
+
 function create_or_get_service {
   local name=$1
   local type=$2
