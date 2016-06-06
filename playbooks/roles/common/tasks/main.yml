@@ -6,8 +6,11 @@
 - name: install software-properties-common
   apt: name=software-properties-common
 
-- name: enable openstack repository
-  command: apt-add-repository cloud-archive:liberty -y
+- name: Add openstack repository
+  apt_repository:
+    repo: "cloud-archive:liberty"
+    update_cache: yes
+    state: present
 
 - name: upgrade packages
   apt: update_cache=yes upgrade=dist
