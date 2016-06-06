@@ -29,12 +29,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define "network" do |net|
+  config.vm.define "network1" do |net|
     net.vm.box = "ubuntu/trusty64"
-    net.vm.hostname = "network"
+    net.vm.hostname = "network1"
     net.vm.network "private_network", ip: "10.1.0.21"
     net.vm.network "private_network", ip: "10.1.1.21", vitual__intnet: "tunnel"
     net.vm.network "private_network", ip: "10.2.0.21"
+    net.vm.provider :virtualbox do |vm|
+      vm.memory = 1024
+      vm.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
+    end
+    net.vm.provision :ansible do |ansible|
+      ansible.playbook = "setup-vagrant.yml"
+      ansible.host_key_checking = false
+    end
+  end
+
+  config.vm.define "network2" do |net|
+    net.vm.box = "ubuntu/trusty64"
+    net.vm.hostname = "network2"
+    net.vm.network "private_network", ip: "10.1.0.22"
+    net.vm.network "private_network", ip: "10.1.1.22", vitual__intnet: "tunnel"
+    net.vm.network "private_network", ip: "10.2.0.22"
     net.vm.provider :virtualbox do |vm|
       vm.memory = 1024
       vm.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
