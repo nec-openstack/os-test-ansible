@@ -1,8 +1,13 @@
 - hosts:
+    - haproxy
+  roles:
+    - mariadb
+    - rabbitmq
+  become: yes
+
+- hosts:
     - controller
     - haproxy
   roles:
     - haproxy
-    - mariadb
-    - rabbitmq
   become: yes
