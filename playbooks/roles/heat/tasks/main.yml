@@ -1,6 +1,6 @@
 - name: create database
   mysql_db: name=heat state=present
-  
+
 - name: create heat user
   mysql_user: name=heat host={{ item }} password={{ HEAT_DBPASS }} priv=heat.*:ALL state=present
   with_items:
@@ -9,12 +9,12 @@
 
 - name: create heat service entry and endpoint
   script: create_heat_service_entity_and_api_endpoint.sh {{ HEAT_PASS }} {{ api_host }}
-  environment: admin_openrc
+  environment: "{{ admin_openrc }}"
   sudo: no
 
 - name: add stack managemant information to Identity service
   script: add_stack_management_information.sh {{ HEAT_DOMAIN_PASS }}
-  environment: admin_openrc
+  environment: "{{ admin_openrc }}"
   sudo: no
 
 - name: install heat packages

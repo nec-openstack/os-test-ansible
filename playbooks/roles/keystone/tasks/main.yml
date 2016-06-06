@@ -21,7 +21,7 @@
     - keystone
     - apache2
     - libapache2-mod-wsgi
-    - memcached 
+    - memcached
     - python-memcache
 
 - name: edit keystone conf file
@@ -49,10 +49,8 @@
 
 - name: create the service entity and API endpoint
   script: create_service_entity_and_api_endpoint.sh {{ api_host }}
-  environment: temp_auth_token
+  environment: "{{ temp_auth_token }}"
 
 - name: Create projects, users, and roles
   script: create_tenants_users_roles.sh {{ ADMIN_PASS }} {{ DEMO_PASS }}
-  environment: temp_auth_token
-
-
+  environment: "{{ temp_auth_token }}"

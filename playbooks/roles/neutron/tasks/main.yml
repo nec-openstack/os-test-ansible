@@ -11,7 +11,7 @@
 
 - name: create neutron service entry and endpoint
   script: create_neutron_service_entity_and_api_endpoint.sh {{ NEUTRON_PASS }} {{ api_host }}
-  environment: admin_openrc
+  environment: "{{ admin_openrc }}"
   sudo: no
 
 - name: install neutron packages
