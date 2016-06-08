@@ -35,7 +35,7 @@
 
 - name: Wait for keystone startup
   uri:
-    url: "http://{{ api_host }}":35357
+    url: "http://{{ api_host }}:35357"
     status_code: 300
     until: result.status == 300
     retries: 60
