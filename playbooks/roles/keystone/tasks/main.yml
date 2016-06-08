@@ -18,6 +18,9 @@
 - name: Populate the Identity service database
   script: keystone_db_sync.sh
 
+- name: Initialize Fernet keys
+  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+
 - name: edit apache conf file
   template: src=apache2.conf.j2 dest=/etc/apache2/apache2.conf
 

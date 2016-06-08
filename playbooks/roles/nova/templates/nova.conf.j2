@@ -13,16 +13,17 @@ enabled_apis=osapi_compute,metadata
 
 rpc_backend = rabbit
 auth_strategy = keystone
-my_ip = {{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}
+my_ip = {{ hostvars[inventory_hostname]['ansible_' + mgmt_interface]['ipv4']['address'] }}
 
-network_api_class = nova.network.neutronv2.api.API
-security_group_api = neutron
-linuxnet_interface_driver = nova.network.linux_net.NeutronLinuxInterfaceDriver
+use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 [vnc]
 vncserver_listen = $my_ip
 vncserver_proxyclient_address = $my_ip
+
+[api_database]
+connection = mysql+pymysql://nova:{{ NOVA_DBPASS }}@{{ db_host }}/nova_api
 
 [database]
 connection = mysql+pymysql://nova:{{ NOVA_DBPASS }}@{{ db_host }}/nova
@@ -35,9 +36,9 @@ rabbit_password = {{ RABBIT_PASS }}
 [keystone_authtoken]
 auth_uri = http://{{ api_host }}:5000
 auth_url = http://{{ api_host }}:35357
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = nova
 password = {{ NOVA_PASS }}
@@ -51,9 +52,9 @@ lock_path = /var/lib/nova/tmp
 [neutron]
 url = http://{{ api_host }}:9696
 auth_url = http://{{ api_host }}:35357
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 region_name = RegionOne
 project_name = service
 username = neutron

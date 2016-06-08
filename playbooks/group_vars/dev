@@ -7,6 +7,7 @@ internal_ntp_server: "{{ api_host }}"
 db_host: "{{ api_host }}"
 rabbit_host: "{{ api_host }}"
 glance_host: "{{ api_host }}"
+memcached_host: "{{ api_host }}"
 
 api_interface: "eth1"
 tunnel_interface: "eth2"
@@ -45,24 +46,24 @@ temp_auth_token:
   OS_IDENTITY_API_VERSION: 3
 
 admin_openrc:
-  OS_PROJECT_DOMAIN_ID: default
-  OS_USER_DOMAIN_ID: default
+  OS_PROJECT_DOMAIN_NAME: default
+  OS_USER_DOMAIN_NAME: default
   OS_PROJECT_NAME: admin
-  OS_TENANT_NAME: admin
   OS_USERNAME: admin
   OS_PASSWORD: "{{ ADMIN_PASS }}"
   OS_AUTH_URL: http://{{ api_host }}:35357/v3
   OS_IDENTITY_API_VERSION: 3
+  OS_IMAGE_API_VERSION: 2
 
 demo_openrc:
-  OS_PROJECT_DOMAIN_ID: default
-  OS_USER_DOMAIN_ID: default
+  OS_PROJECT_DOMAIN_NAME: default
+  OS_USER_DOMAIN_NAME: default
   OS_PROJECT_NAME: demo
-  OS_TENANT_NAME: demo
   OS_USERNAME: demo
   OS_PASSWORD: "{{ DEMO_PASS }}"
   OS_AUTH_URL: http://{{ api_host }}:5000/v3
   OS_IDENTITY_API_VERSION: 3
+  OS_IMAGE_API_VERSION: 2
 
 virt_type: qemu
 time_zone: UTC
@@ -74,6 +75,7 @@ mariadb_databases:
   - keystone
   - neutron
   - nova
+  - nova_api
 
 mariadb_users:
   - name: cinder
@@ -98,5 +100,5 @@ mariadb_users:
     host: "%"
   - name: nova
     password: "{{ NOVA_DBPASS }}"
-    priv: "nova.*:ALL"
+    priv: "nova.*:ALL/nova_api.*:ALL"
     host: "%"

@@ -36,10 +36,16 @@ function get_or_create_domain {
 #admin users expected
 function create_or_get_project {
     local name=$1
+    local description=$2
+    local domain=${3:-'default'}
     local id
-    eval $(openstack project show -f shell -c id $name)
+    eval $(openstack project show --domain $domain -f shell -c id $name)
     if [[ -z $id ]]; then
-        eval $(openstack project create -f shell -c id $name)
+        eval $(openstack project create \
+                -f shell -c id \
+                --domain $domain \
+                --description $description \
+                $name)
     fi
     echo $id
 }
