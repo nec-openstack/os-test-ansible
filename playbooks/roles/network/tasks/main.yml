@@ -37,11 +37,14 @@
   when: mechanism_driver == "openvswitch"
 
 - name: Add the external bridge
-  command: ovs-vsctl add-br br-ex
+  openvswitch_bridge:
+    bridge: "br-ex"
   when: mechanism_driver == "openvswitch"
 
 - name: Add a port to the external bridge that connects to the physical external network interface
-  command: ovs-vsctl add-port br-ex {{ public_interface }}
+  openvswitch_port:
+    bridge: "br-ex"
+    port: "{{ public_interface }}"
   when: mechanism_driver == "openvswitch"
 
 - name: Restart the Networking services
