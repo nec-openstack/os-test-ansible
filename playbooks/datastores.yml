@@ -1,0 +1,6 @@
+- hosts:
+    - datastores
+  roles:
+    - mariadb
+    - rabbitmq
+  become: yes

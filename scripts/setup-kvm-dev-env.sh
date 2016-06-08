@@ -1,11 +1,5 @@
 #!/bin/bash
 
-bridge=${1:-"br0"}
-api_network=${2:-"192.168.203"}
-tunnel_network=${3:-"192.168.203"}
-netmask=${4:-"255.255.0.0"}
-gateway=${5:-"192.168.11.1"}
-
 script_dir=`dirname $0`
 userdata_dir=${script_dir}/userdata
 playbooks_dir=${script_dir}/../playbooks
@@ -13,6 +7,11 @@ group_vars_dir=${playbooks_dir}/group_vars
 
 source ${script_dir}/kvm-settings.sh
 settings=("${_OS_TEST_KVM_SETTINGS[@]}")
+bridge=${OS_TEST_BRIDGE}
+api_network=${OS_TEST_API_NETWORK}
+tunnel_network=${OS_TEST_TUNNEL_NETWORK}
+netmask=${OS_TEST_NETMASK}
+gateway=${OS_TEST_GATEWAY}
 
 for setting in "${settings[@]}"
 do
@@ -59,15 +58,27 @@ tunnel_interface: "eth1"
 public_interface: "eth2"
 EOS
 
-echo "[haproxy]" > ${playbooks_dir}/kvm
-echo "haproxy ansible_ssh_host=${api_network}.${HAPROXY[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+echo "" > ${playbooks_dir}/kvm
+for setting in "${settings[@]}"
+do
+  setting=($setting)
+  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+done
+
+echo "" >> ${playbooks_dir}/kvm
+echo "[haproxy]" >> ${playbooks_dir}/kvm
+echo "${HAPROXY[1]}" >> ${playbooks_dir}/kvm
+echo "" >> ${playbooks_dir}/kvm
+
+echo "[datastores]" >> ${playbooks_dir}/kvm
+echo "${HAPROXY[1]}" >> ${playbooks_dir}/kvm
 echo "" >> ${playbooks_dir}/kvm
 
 echo "[controller]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_CONTROLLERS[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
@@ -75,7 +86,7 @@ echo "[network]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_NETWORKS[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
@@ -83,7 +94,7 @@ echo "[computes]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_COMPUTES[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
@@ -91,13 +102,14 @@ echo "[blocks]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_STORAGES[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
 cat >> ${playbooks_dir}/kvm <<EOS
 [dev:children]
 haproxy
+datastores
 controller
 network
 computes

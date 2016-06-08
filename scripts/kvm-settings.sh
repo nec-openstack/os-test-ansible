@@ -1,16 +1,23 @@
 #!/bin/bash
 
+export OS_TEST_BRIDGE=${OS_TEST_BRIDGE:-"br0"}
+export OS_TEST_NETMASK=${OS_TEST_NETMASK:-"255.255.0.0"}
+export OS_TEST_GATEWAY=${OS_TEST_GATEWAY:-"192.168.11.1"}
+
+export OS_TEST_API_NETWORK=${OS_TEST_API_NETWORK:-"192.168.203"}
+export OS_TEST_TUNNEL_NETWORK=${OS_TEST_TUNNEL_NETWORK:-"192.168.203"}
+
 if [[ $OS_TEST_HAPROXY ]]; then
   echo ${OS_TEST_HAPROXY}
 else
-  export OS_TEST_HAPROXY="haproxy haproxy 1 2048 40 101 201"
+  export OS_TEST_HAPROXY="haproxy proxy 1 2048 40 101 201"
 fi
 
 if [[ $OS_TEST_CONTROLLERS ]]; then
   echo ${OS_TEST_CONTROLLERS[@]}
 else
   export OS_TEST_CONTROLLERS=(
-    "controller controller01 2 2048 40 11 111"
+    "controller controller01 2 4096 40 11 111"
   )
 fi
 
