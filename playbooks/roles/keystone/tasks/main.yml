@@ -33,7 +33,13 @@
 - name: remove the SQLite database file
   file: path=/var/lib/keystone/keystone.db state=absent
 
-- debug: var='api_host'
+- name: Wait for keystone startup
+  uri:
+    url: "http://{{ api_host }}":35357
+    status_code: 300
+    until: result.status == 300
+    retries: 60
+    delay: 1
 
 - name: create the service entity and API endpoint
   script: create_service_entity_and_api_endpoint.sh {{ api_host }}
