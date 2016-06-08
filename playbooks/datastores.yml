@@ -3,4 +3,5 @@
   roles:
     - mariadb
     - rabbitmq
+    - nfs_server
   become: yes
