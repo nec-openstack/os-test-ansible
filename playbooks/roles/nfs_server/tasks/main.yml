@@ -1,0 +1,14 @@
+---
+
+- name: install nfs server
+  apt: pkg=nfs-kernel-server
+
+- name: make instances directory
+  file: path=/instances state=directory owner=root group=root mode=0777
+
+- name: export directory
+  template: src=exports.j2 dest=/etc/exports
+
+- name: restart nfs-kernel-server
+  service: name=nfs-kernel-server state=restarted
+

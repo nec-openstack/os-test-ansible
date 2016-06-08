@@ -1,0 +1,4 @@
+/instances nfs {{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['address'] }}/{{ hostvars[inventory_hostname]['ansible_' + api_interface]['ipv4']['netmask'] }}(rw,sync,no_root_squash,no_subtree_check)
+
+
+
