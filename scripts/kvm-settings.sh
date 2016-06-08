@@ -10,7 +10,7 @@ if [[ $OS_TEST_CONTROLLERS ]]; then
   echo ${OS_TEST_CONTROLLERS[@]}
 else
   export OS_TEST_CONTROLLERS=(
-    "controller controller01 2 2048 40 11 111"
+    "controller controller01 2 4096 40 11 111"
   )
 fi
 
