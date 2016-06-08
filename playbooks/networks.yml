@@ -1,6 +1,4 @@
 - hosts: network
   roles:
-    - common
-    - ntp_client
     - network
   become: yes
