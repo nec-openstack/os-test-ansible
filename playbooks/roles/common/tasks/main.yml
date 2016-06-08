@@ -7,7 +7,7 @@
   apt: name=software-properties-common
 
 - name: enable openstack repository
-  command: apt-add-repository cloud-archive:liberty -y
+  command: apt-add-repository cloud-archive:mitaka -y
 
 - name: upgrade packages
   apt: update_cache=yes upgrade=dist
