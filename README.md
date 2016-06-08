@@ -44,16 +44,8 @@ $ ./create_private_network.sh
 
     $ uvt-simplestreams-libvirt sync release=trusty arch=amd64
     $ # Please modify network settings
-    $ bash scripts/setup-kvm-dev-env.sh br0 \
-                                        192.168.203 \
-                                        192.168.203 \
-                                        255.255.0.0 \
-                                        192.168.11.1
-    $ bash scripts/kvm-up.sh br0 \
-                             192.168.203 \
-                             192.168.203 \
-                             255.255.0.0 \
-                             192.168.11.1
+    $ bash scripts/setup-kvm-dev-env.sh
+    $ bash scripts/kvm-up.sh
     $ cd playbooks
     $ ansible-playbook -i kvm -e@group_vars/kvm site.yml
 
