@@ -9,7 +9,6 @@
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
     - nova-api
-    - nova-cert
     - nova-conductor
     - nova-consoleauth
     - nova-novncproxy
@@ -26,7 +25,6 @@
   service: name={{ item }} state=restarted
   with_items:
     - nova-api
-    - nova-cert
     - nova-consoleauth
     - nova-scheduler
     - nova-conductor

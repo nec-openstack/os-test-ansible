@@ -4,7 +4,7 @@
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
     - neutron-plugin-ml2
-    - neutron-plugin-{{ mechanism_driver }}-agent
+    - neutron-{{ mechanism_driver }}-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
     - neutron-metadata-agent
@@ -50,7 +50,7 @@
 - name: Restart the Networking services
   service: name={{ item }} state=restarted
   with_items:
-    - neutron-plugin-{{ mechanism_driver }}-agent
+    - neutron-{{ mechanism_driver }}-agent
     - neutron-dhcp-agent
     - neutron-metadata-agent
     - neutron-l3-agent

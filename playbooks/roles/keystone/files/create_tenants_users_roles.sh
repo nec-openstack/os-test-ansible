@@ -1,11 +1,13 @@
 #!/bin/bash
-openstack project create --domain default --description "Admin Project" admin
-openstack user create --domain default --password $1 admin
-openstack role create admin
-openstack role add --project admin --user admin admin
-openstack project create --domain default --description "Service Project" service
-openstack project create --domain default --description "Demo Project" demo
-openstack user create --domain default --password $2 demo
-openstack role create user
-openstack role add --project demo --user demo user
+source /opt/local/bin/os-utils.sh
 
+get_or_create_domain default "Default Domain"
+create_or_get_project admin "Admin Project" default
+create_or_get_user admin $1 default
+create_or_get_role admin
+get_or_add_user_project_role admin admin admin
+create_or_get_project service "Service Project" default
+create_or_get_project demo "Demo Project" default
+create_or_get_user demo $2 default
+create_or_get_role user
+get_or_add_user_project_role user demo demo

@@ -452,19 +452,19 @@ connection = mysql+pymysql://heat:{{ HEAT_DBPASS }}@{{ db_host }}/heat
 
 auth_uri = http://{{ api_host }}:5000
 auth_url = http://{{ api_host }}:35357
-auth_plugin = password
-project_domain_id = default
-user_domain_id = default
+auth_type = password
+project_domain_name = default
+user_domain_name = default
 project_name = service
 username = heat
 password = {{ HEAT_PASS }}
 
 [trustee]
-auth_plugin = password
+auth_type = password
 auth_url = http://{{ api_host }}:35357
 username = heat
 password = {{ HEAT_PASS }}
-user_domain_id = default
+user_domain_name = default
 
 [clients_keystone]
 auth_uri = http://{{ api_host }}:5000

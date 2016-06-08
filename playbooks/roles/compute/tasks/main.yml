@@ -4,7 +4,6 @@
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
     - nova-compute
-    - sysfsutils
 
 - name: edit nova conf file
   template: src=nova.conf.j2 dest=/etc/nova/nova.conf
@@ -25,7 +24,7 @@
 - name: install neutron packages
   apt: pkg={{ item }} update_cache=yes cache_valid_time=3600
   with_items:
-    - neutron-plugin-{{ mechanism_driver }}-agent
+    - neutron-{{ mechanism_driver }}-agent
 
 - name: edit neutron conf file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
@@ -34,4 +33,4 @@
   template: src={{ mechanism_driver }}_agent.ini.j2 dest=/etc/neutron/plugins/ml2/{{ mechanism_driver }}_agent.ini
 
 - name: Restart L2 agent
-  service: name=neutron-plugin-{{ mechanism_driver }}-agent state=restarted
+  service: name=neutron-{{ mechanism_driver }}-agent state=restarted
