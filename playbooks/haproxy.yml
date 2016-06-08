@@ -1,11 +1,4 @@
 - hosts:
-    - haproxy
-  roles:
-    - mariadb
-    - rabbitmq
-  become: yes
-
-- hosts:
     - controller
     - haproxy
   roles:

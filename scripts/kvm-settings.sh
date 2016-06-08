@@ -3,7 +3,7 @@
 if [[ $OS_TEST_HAPROXY ]]; then
   echo ${OS_TEST_HAPROXY}
 else
-  export OS_TEST_HAPROXY="haproxy haproxy 1 2048 40 101 201"
+  export OS_TEST_HAPROXY="haproxy proxy 1 2048 40 101 201"
 fi
 
 if [[ $OS_TEST_CONTROLLERS ]]; then

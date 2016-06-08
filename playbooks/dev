@@ -1,4 +1,4 @@
-haproxy ansible_ssh_host=10.1.0.101 ansible_ssh_user=vagrant
+proxy ansible_ssh_host=10.1.0.101 ansible_ssh_user=vagrant
 controller ansible_ssh_host=10.1.0.11 ansible_ssh_user=vagrant
 network1 ansible_ssh_host=10.1.0.21 ansible_ssh_user=vagrant
 network2 ansible_ssh_host=10.1.0.22 ansible_ssh_user=vagrant
@@ -6,7 +6,10 @@ compute1 ansible_ssh_host=10.1.0.31 ansible_ssh_user=vagrant
 block1 ansible_ssh_host=10.1.0.41 ansible_ssh_user=vagrant
 
 [haproxy]
-haproxy
+proxy
+
+[datastores]
+proxy
 
 [controller]
 controller
@@ -23,6 +26,7 @@ block1
 
 [dev:children]
 haproxy
+datastores
 controller
 network
 computes

@@ -59,15 +59,27 @@ tunnel_interface: "eth1"
 public_interface: "eth2"
 EOS
 
-echo "[haproxy]" > ${playbooks_dir}/kvm
-echo "haproxy ansible_ssh_host=${api_network}.${HAPROXY[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+echo "" > ${playbooks_dir}/kvm
+for setting in "${settings[@]}"
+do
+  setting=($setting)
+  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+done
+
+echo "" >> ${playbooks_dir}/kvm
+echo "[haproxy]" >> ${playbooks_dir}/kvm
+echo "${HAPROXY[1]}" >> ${playbooks_dir}/kvm
+echo "" >> ${playbooks_dir}/kvm
+
+echo "[datastores]" >> ${playbooks_dir}/kvm
+echo "${HAPROXY[1]}" >> ${playbooks_dir}/kvm
 echo "" >> ${playbooks_dir}/kvm
 
 echo "[controller]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_CONTROLLERS[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
@@ -75,7 +87,7 @@ echo "[network]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_NETWORKS[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
@@ -83,7 +95,7 @@ echo "[computes]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_COMPUTES[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
@@ -91,13 +103,14 @@ echo "[blocks]" >> ${playbooks_dir}/kvm
 for setting in "${OS_TEST_STORAGES[@]}"
 do
   setting=($setting)
-  echo "${setting[1]} ansible_ssh_host=${api_network}.${setting[5]} ansible_ssh_user=kolla" >> ${playbooks_dir}/kvm
+  echo "${setting[1]}" >> ${playbooks_dir}/kvm
 done
 echo "" >> ${playbooks_dir}/kvm
 
 cat >> ${playbooks_dir}/kvm <<EOS
 [dev:children]
 haproxy
+datastores
 controller
 network
 computes
