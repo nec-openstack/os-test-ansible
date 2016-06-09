@@ -17,6 +17,24 @@
 - name: remove the SQLite database file
   file: path=/var/lib/nova/nova.sqlite state=absent
 
+- name: chmod /var/lib/nova/instances for live migration
+  file: path=/var/lib/nova/instances mode="o+x"
+
+- name: edit /etc/fstab
+  lineinfile: dest=/etc/fstab line="{{ api_host }}:/instances /var/lib/nova/instances nfs4 defaults 0 0"
+
+- name: mount nfs directory
+  mount: name=/var/lib/nova/instances src={{ api_host }}:/instances fstype=nfs4 state=present
+
+- name: edit libvirtd.conf
+  copy: src=libvirtd.conf dest=/etc/libvirt/libvirtd.conf
+
+- name: edit libvirt-bin
+  replace: dest=/etc/default/libvirt-bin regexp='libvirtd_opts="-d"' replace='libvirtd_opts="-d -l"'
+
+- name: restart libvirt-bin
+  service: name=libvirt-bin state=restarted
+
 #
 # Add a networking component
 #

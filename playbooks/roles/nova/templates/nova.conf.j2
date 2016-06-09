@@ -33,6 +33,9 @@ rabbit_host = {{ rabbit_host }}
 rabbit_userid = openstack
 rabbit_password = {{ RABBIT_PASS }}
 
+[libvirt]
+live_migration_flag=VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_TUNNELLED
+
 [keystone_authtoken]
 auth_uri = http://{{ api_host }}:5000
 auth_url = http://{{ api_host }}:35357
