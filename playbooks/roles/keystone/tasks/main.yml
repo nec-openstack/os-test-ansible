@@ -40,9 +40,9 @@
   uri:
     url: "http://{{ api_host }}:35357"
     status_code: 300
-    until: result.status == 300
-    retries: 60
-    delay: 1
+  until: result.status == 300
+  retries: 60
+  delay: 1
 
 - name: create the service entity and API endpoint
   script: create_service_entity_and_api_endpoint.sh {{ api_host }}
