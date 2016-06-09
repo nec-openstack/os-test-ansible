@@ -43,8 +43,8 @@ function create_or_get_project {
     if [[ -z $id ]]; then
         eval $(openstack project create \
                 -f shell -c id \
-                --domain $domain \
-                --description $description \
+                --domain "${domain}" \
+                --description "${description}" \
                 $name)
     fi
     echo $id
@@ -139,8 +139,8 @@ function create_or_get_service {
   if [[ -z $id ]]; then
       eval $(openstack service create \
               -f shell -c id \
-              --name $name \
-              --description "$description" \
+              --name "${name}" \
+              --description "${description}" \
               $type)
   fi
   echo $id
