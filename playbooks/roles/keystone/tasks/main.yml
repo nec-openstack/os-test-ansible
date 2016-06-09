@@ -37,7 +37,8 @@
   uri:
     url: "http://{{ api_host }}:35357"
     status_code: 300
-  until: result.status == 300
+  register: wait_keystone_result
+  until: wait_keystone_result.status == 300
   retries: 60
   delay: 1
 
