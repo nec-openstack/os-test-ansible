@@ -12,8 +12,14 @@
 - name: upgrade packages
   apt: update_cache=yes upgrade=dist
 
-- name: Install the OpenStack client
-  apt: name=python-openstackclient update_cache=yes cache_valid_time=3600
+- name: Install the OpenStack client and dependencies
+  apt: name={{ item }} update_cache=yes cache_valid_time=3600
+  with_items:
+    - python-openstackclient
+    - python-pip
+
+- name: Install openstack python library
+  pip: name=shade
 
 - name: Create Util directory
   file:
