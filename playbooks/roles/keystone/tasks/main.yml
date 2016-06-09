@@ -50,8 +50,10 @@
   os_keystone_domain:
     name: "default"
     description: "Default Domain"
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_default_domain
-  environment: "{{ temp_auth_token }}"
 
 - name: Create admin project
   os_project:
@@ -59,8 +61,10 @@
     description: "Admin Project"
     domain_id: "{{ os_default_domain.domain.id }}"
     enabled: True
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_admin_project
-  environment: "{{ temp_auth_token }}"
 
 - name: Create service project
   os_project:
@@ -68,8 +72,10 @@
     description: "Service Project"
     domain_id: "{{ os_default_domain.domain.id }}"
     enabled: True
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_service_project
-  environment: "{{ temp_auth_token }}"
 
 - name: Create demo project
   os_project:
@@ -77,8 +83,10 @@
     description: "Demo Project"
     domain_id: "{{ os_default_domain.domain.id }}"
     enabled: True
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_demo_project
-  environment: "{{ temp_auth_token }}"
 
 - name: Create admin user
   os_user:
@@ -86,8 +94,10 @@
     password: "{{ ADMIN_PASS }}"
     domain: "{{ os_default_domain.domain.id }}"
     default_project: "{{ os_admin_project.project.id }}"
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_admin_user
-  environment: "{{ temp_auth_token }}"
 
 - name: Create demo user
   os_user:
@@ -95,31 +105,43 @@
     password: "{{ DEMO_PASS }}"
     domain: "{{ os_default_domain.domain.id }}"
     default_project: "{{ os_demo_project.project.id }}"
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_demo_user
-  environment: "{{ temp_auth_token }}"
 
 - name: Create admin role
   os_keystone_role:
     state: present
     name: admin
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_admin_role
-  environment: "{{ temp_auth_token }}"
 
 - name: Create user role
   os_keystone_role:
     state: present
     name: user
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
   register: os_user_role
-  environment: "{{ temp_auth_token }}"
 
 - name: Assign admin role to admin
   os_user_role:
     user: "{{ os_admin_user.user.id }}"
     role: "{{ os_admin_role.role.id }}"
     project: "{{ os_admin_project.project.id }}"
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
 
 - name: Assign user role to user
   os_user_role:
     user: "{{ os_demo_user.user.id }}"
     role: "{{ os_user_role.role.id }}"
     project: "{{ os_demo_project.project.id }}"
+    auth:
+      auth_url: "{{ temp_auth_token.OS_URL }}"
+      auth_token: "{{ temp_auth_token.OS_TOKEN }}"
