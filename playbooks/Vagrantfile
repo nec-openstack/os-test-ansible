@@ -3,9 +3,9 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
 
-  config.vm.define "haproxy" do |haproxy|
+  config.vm.define "proxy" do |haproxy|
     haproxy.vm.box = "ubuntu/trusty64"
-    haproxy.vm.hostname = "haproxy"
+    haproxy.vm.hostname = "proxy"
     haproxy.vm.network "private_network", ip: "10.1.0.101"
     haproxy.vm.provider :virtualbox do |vm|
       vm.memory = 2048
@@ -21,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cont.vm.hostname = "controller"
     cont.vm.network "private_network", ip: "10.1.0.11"
     cont.vm.provider :virtualbox do |vm|
-      vm.memory = 2048
+      vm.memory = 4096
     end
     cont.vm.provision :ansible do |ansible|
       ansible.playbook = "setup-vagrant.yml"
