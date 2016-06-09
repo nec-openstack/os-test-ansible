@@ -46,6 +46,80 @@
   script: create_service_entity_and_api_endpoint.sh {{ api_host }}
   environment: "{{ temp_auth_token }}"
 
-- name: Create projects, users, and roles
-  script: create_tenants_users_roles.sh {{ ADMIN_PASS }} {{ DEMO_PASS }}
+- name: Create default domain
+  os_keystone_domain:
+    name: "default"
+    description: "Default Domain"
+  register: os_default_domain
   environment: "{{ temp_auth_token }}"
+
+- name: Create admin project
+  os_project:
+    name: admin
+    description: "Admin Project"
+    domain_id: "{{ os_default_domain.domain.id }}"
+    enabled: True
+  register: os_admin_project
+  environment: "{{ temp_auth_token }}"
+
+- name: Create service project
+  os_project:
+    name: admin
+    description: "Service Project"
+    domain_id: "{{ os_default_domain.domain.id }}"
+    enabled: True
+  register: os_service_project
+  environment: "{{ temp_auth_token }}"
+
+- name: Create demo project
+  os_project:
+    name: demo
+    description: "Demo Project"
+    domain_id: "{{ os_default_domain.domain.id }}"
+    enabled: True
+  register: os_demo_project
+  environment: "{{ temp_auth_token }}"
+
+- name: Create admin user
+  os_user:
+    name: admin
+    password: "{{ ADMIN_PASS }}"
+    domain: "{{ os_default_domain.domain.id }}"
+    default_project: "{{ os_admin_project.project.id }}"
+  register: os_admin_user
+  environment: "{{ temp_auth_token }}"
+
+- name: Create demo user
+  os_user:
+    name: demo
+    password: "{{ DEMO_PASS }}"
+    domain: "{{ os_default_domain.domain.id }}"
+    default_project: "{{ os_demo_project.project.id }}"
+  register: os_demo_user
+  environment: "{{ temp_auth_token }}"
+
+- name: Create admin role
+  os_keystone_role:
+    state: present
+    name: admin
+  register: os_admin_role
+  environment: "{{ temp_auth_token }}"
+
+- name: Create user role
+  os_keystone_role:
+    state: present
+    name: user
+  register: os_user_role
+  environment: "{{ temp_auth_token }}"
+
+- name: Assign admin role to admin
+  os_user_role:
+    user: "{{ os_admin_user.user.id }}"
+    role: "{{ os_admin_role.role.id }}"
+    project: "{{ os_admin_project.project.id }}"
+
+- name: Assign user role to user
+  os_user_role:
+    user: "{{ os_demo_user.user.id }}"
+    role: "{{ os_user_role.role.id }}"
+    project: "{{ os_demo_project.project.id }}"
